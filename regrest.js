@@ -4,7 +4,10 @@ function Regrest() {
     this.mode = this.modes.browser;
   } else if (typeof require("http") !== "undefined") {
     this.mode = this.modes.node;
-    this.http = require("https");
+    this.nodeAdapters = {
+      http: require("http"),
+      https: require("https")
+    };
   }
   this.defaultHeader = {
     Accept: "application/json",
@@ -19,7 +22,7 @@ Regrest.prototype.request = function(requestType, url, body = null, cusHeader) {
       case this.modes.browser:
         const request = new XMLHttpRequest();
         request.open(requestType, url, true);
-        Object.entried(cusHeader).forEach(header => {
+        Object.entries(cusHeader).forEach(header => {
           request.setRequestHeader(header[0], header[1]);
         });
         request.onload = function() {
@@ -37,16 +40,19 @@ Regrest.prototype.request = function(requestType, url, body = null, cusHeader) {
           method: requestType,
           header: cusHeader
         };
-        const req = this.http.request(options, res => {
-          let rawData = "";
-          res.setEncoding("utf8");
-          res.on("data", chunk => {
-            rawData += chunk;
-          });
-          res.on("end", () => {
-            resolve(rawData);
-          });
-        });
+        const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
+          options,
+          res => {
+            let rawData = "";
+            res.setEncoding("utf8");
+            res.on("data", chunk => {
+              rawData += chunk;
+            });
+            res.on("end", () => {
+              resolve(rawData);
+            });
+          }
+        );
         req.on("error", e => reject(e));
         body && req.write(body);
         req.end();
