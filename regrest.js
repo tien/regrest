@@ -28,7 +28,10 @@ Regrest.prototype.request = function(requestType, url, body = null, cusHeader) {
         request.onload = function() {
           this.status >= 200 && this.status < 400
             ? resolve(this.response)
-            : reject(this.response);
+            : reject(`${this.status} ${this.statusText}`);
+        };
+        request.onerror = function() {
+          reject("connection error");
         };
         request.send(body);
         break;
@@ -43,14 +46,18 @@ Regrest.prototype.request = function(requestType, url, body = null, cusHeader) {
         const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
           options,
           res => {
-            let rawData = "";
-            res.setEncoding("utf8");
-            res.on("data", chunk => {
-              rawData += chunk;
-            });
-            res.on("end", () => {
-              resolve(rawData);
-            });
+            if (res.statusCode >= 200 && res.statusCode < 400) {
+              let rawData = "";
+              res.setEncoding("utf8");
+              res.on("data", chunk => {
+                rawData += chunk;
+              });
+              res.on("end", () => {
+                resolve(rawData);
+              });
+            } else {
+              reject(`${res.statusCode} ${res.statusMessage}`);
+            }
           }
         );
         req.on("error", e => reject(e));
