@@ -41,7 +41,7 @@ Regrest.prototype.request = function(requestType, url, body = null, cusHeader) {
           host: parsedUrl.host,
           path: parsedUrl.pathname,
           method: requestType,
-          header: cusHeader
+          headers: cusHeader
         };
         const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
           options,
