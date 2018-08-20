@@ -35,12 +35,12 @@ Regrest.prototype.post = function(url, data, cusHeader) {
   return this.request("POST", url, data, cusHeader);
 };
 
-Regrest.prototype.put = function() {
+Regrest.prototype.put = function(url, data, cusHeader) {
   return this.request("PUT", url, data, cusHeader);
 };
 
-Regrest.prototype.delete = function() {
-  return this.request("DELETE", url, data, cusHeader);
+Regrest.prototype.delete = function(url, cusHeader) {
+  return this.request("DELETE", url, null, cusHeader);
 };
 
 module.exports = new Regrest();
