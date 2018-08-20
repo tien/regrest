@@ -1,11 +1,9 @@
 {
   "name": "regrest",
   "version": "1.0.0",
-  "description": "light weight http request libraries",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "tiny http client - modern promise base - anti callbacks hell ",
+  "main": "regrest.js",
   "author": "Tien Nguyen Khac",
-  "license": "ISC"
+  "homepage": "https://github.com/crazycat9x/regrest",
+  "license": "MIT"
 }
