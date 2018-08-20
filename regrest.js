@@ -1,14 +1,14 @@
-const ENVIRONMENTS = Object.freeze({ browser: "browser", node: "node" });
+const ENVIRONMENTS = Object.freeze({ browser, node, unknown });
 
 // Detect whether instance is ran in browser or on node js
 const ENV =
   typeof window !== "undefined" && typeof window.document !== "undefined"
-    ? "browser"
+    ? ENVIRONMENTS.browser
     : typeof process !== "undefined" &&
       process.versions &&
       process.versions.node
-      ? "node"
-      : "unknown ENV";
+      ? ENVIRONMENTS.node
+      : ENVIRONMENTS.unknown;
 
 function Regrest() {
   this.defaultHeader = {
@@ -54,7 +54,7 @@ Regrest.prototype.delete = function(url, cusHeader) {
   return this.request("DELETE", url, null, cusHeader);
 };
 
-typeof module !== "undefined" && (module.exports = new Regrest())
+typeof module !== "undefined" && (module.exports = new Regrest());
 
 function browserRequest(requestType, url, body, cusHeader) {
   return new Promise((resolve, reject) => {
