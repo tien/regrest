@@ -61,7 +61,7 @@ function nodeRequest(requestType, url, body, cusHeader) {
     const parsedUrl = new URL(url);
     const options = {
       host: parsedUrl.host,
-      path: parsedUrl.pathname,
+      path: `${parsedUrl.pathname}${parsedUrl.search}`,
       method: requestType,
       headers: cusHeader
     };
