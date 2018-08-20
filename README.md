@@ -28,3 +28,25 @@ try {
 // Or use callbacks
 // WE DON'T DO THAT HERE
 ```
+
+## Documentation
+
+Regrest is also designed to be self-documenting, here are the provided convenience methods
+
+```js
+Regrest.prototype.get = function(url, cusHeader) {
+  return this.request("GET", url, null, cusHeader);
+};
+
+Regrest.prototype.post = function(url, data, cusHeader) {
+  return this.request("POST", url, data, cusHeader);
+};
+
+Regrest.prototype.put = function(url, data, cusHeader) {
+  return this.request("PUT", url, data, cusHeader);
+};
+
+Regrest.prototype.delete = function(url, cusHeader) {
+  return this.request("DELETE", url, null, cusHeader);
+};
+```
