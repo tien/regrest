@@ -1,28 +1,39 @@
+const ENVIRONMENTS = Object.freeze({ browser: "browser", node: "node" });
+
+// Detect whether instance is ran in browser or on node js
+const ENV =
+  typeof window !== "undefined" && typeof window.document !== "undefined"
+    ? "browser"
+    : typeof process !== "undefined" &&
+      process.versions &&
+      process.versions.node
+      ? "node"
+      : "unknown ENV";
+
 function Regrest() {
-  this.modes = Object.freeze({ browser: "browser", node: "node" });
   this.defaultHeader = {
     Accept: "application/json",
     "Content-Type": "application/json"
   };
-  if (typeof XMLHttpRequest !== "undefined") {
-    this.mode = this.modes.browser;
-  } else if (typeof require("http") !== "undefined") {
-    this.mode = this.modes.node;
+  if (ENV === ENVIRONMENTS.browser) {
+    this.mode = ENVIRONMENTS.browser;
+  } else if (ENV === ENVIRONMENTS.node) {
+    this.mode = ENVIRONMENTS.node;
     this.nodeAdapters = {
       http: require("http"),
       https: require("https")
     };
   } else {
-    throw "Regrest does not support this eviroment";
+    throw "Unsupported environment";
   }
 }
 
 Regrest.prototype.request = function(requestType, url, body, cusHeader) {
   cusHeader = cusHeader || this.defaultHeader;
   switch (this.mode) {
-    case this.modes.browser:
+    case ENVIRONMENTS.browser:
       return browserRequest.bind(this)(...arguments);
-    case this.modes.node:
+    case ENVIRONMENTS.node:
       return nodeRequest.bind(this)(...arguments);
   }
 };
@@ -43,7 +54,7 @@ Regrest.prototype.delete = function(url, cusHeader) {
   return this.request("DELETE", url, null, cusHeader);
 };
 
-module.exports = new Regrest();
+typeof module !== "undefined" && (module.exports = new Regrest())
 
 function browserRequest(requestType, url, body, cusHeader) {
   return new Promise((resolve, reject) => {
