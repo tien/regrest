@@ -47,19 +47,31 @@
   };
 
   Regrest.prototype.get = function(url, config) {
-    return this.request({ url, ...config });
+    return this.request({ ...config, url });
+  };
+
+  Regrest.prototype.head = function(url, config) {
+    return this.request({ ...config, url });
   };
 
   Regrest.prototype.post = function(url, data, config) {
-    return this.request({ method: "POST", url, ...config, data });
+    return this.request({ ...config, method: "POST", url, data });
   };
 
   Regrest.prototype.put = function(url, data, config) {
-    return this.request({ method: "PUT", url, ...config, data });
+    return this.request({ ...config, method: "PUT", url, data });
   };
 
   Regrest.prototype.delete = function(url, config) {
-    return this.request({ method: "DELETE", url, ...config });
+    return this.request({ ...config, method: "DELETE", url });
+  };
+
+  Regrest.prototype.options = function(url, config) {
+    return this.request({ ...config, url });
+  };
+
+  Regrest.prototype.patch = function(url, data, config) {
+    return this.request({ ...config, method: "PATCH", url, data });
   };
 
   // Export
