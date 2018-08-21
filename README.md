@@ -10,7 +10,21 @@ Micro Promise based HTTP client for the browser and node.js
 - Make [http](http://nodejs.org/api/http.html) requests from node.js
 - Supports the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API
 
-## Super simple to use
+## Installing
+
+Using npm:
+
+```bash
+$ npm install regrest
+```
+
+Using cdn:
+
+```html
+<script src="https://unpkg.com/regrest@1.0.0/regrest.js"></script>
+```
+
+## Example
 
 Regrest is designed to be the simplest way possible to make http calls
 
