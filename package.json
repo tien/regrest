@@ -3,7 +3,21 @@
   "version": "1.0.0",
   "description": "tiny http client - modern promise base - anti callbacks hell ",
   "main": "regrest.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crazycat9x/regrest.git"
+  },
+  "keywords": [
+    "xhr",
+    "http",
+    "ajax",
+    "promise",
+    "node"
+  ],
   "author": "Tien Nguyen Khac",
-  "homepage": "https://github.com/crazycat9x/regrest",
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "https://github.com/crazycat9x/regrest#readme",
+  "bugs": {
+    "url": "https://github.com/flexdinesh/npm-module-boilerplate/issues"
+  }
 }
