@@ -1,8 +1,14 @@
 # Regrest - Micro HTTP client
 
-- A tiny promise based HTTP client
-- Work on Node js using http module
-- Work on any browser that support XMLHttpRequest
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+Micro Promise based HTTP client for the browser and node.js
+
+## Features
+
+- Make [XMLHttpRequests](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) from the browser
+- Make [http](http://nodejs.org/api/http.html) requests from node.js
+- Supports the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API
 
 ## Super simple to use
 
