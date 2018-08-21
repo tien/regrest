@@ -1,41 +1,39 @@
-const ENVIRONMENTS = Object.freeze({ browser, node, unknown });
+const ENVIRONMENTS = Object.freeze({ BROWSER: 0, NODE: 1, UNKNOWN: 2 });
 
 // Detect whether instance is ran in browser or on node js
 const ENV =
   typeof window !== "undefined" && typeof window.document !== "undefined"
-    ? ENVIRONMENTS.browser
+    ? ENVIRONMENTS.BROWSER
     : typeof process !== "undefined" &&
       process.versions &&
       process.versions.node
-      ? ENVIRONMENTS.node
-      : ENVIRONMENTS.unknown;
+      ? ENVIRONMENTS.NODE
+      : ENVIRONMENTS.UNKNOWN;
 
 function Regrest() {
   this.defaultHeader = {
     Accept: "application/json",
     "Content-Type": "application/json"
   };
-  if (ENV === ENVIRONMENTS.browser) {
-    this.mode = ENVIRONMENTS.browser;
-  } else if (ENV === ENVIRONMENTS.node) {
-    this.mode = ENVIRONMENTS.node;
-    this.nodeAdapters = {
-      http: require("http"),
-      https: require("https")
-    };
-  } else {
-    throw "Unsupported environment";
+  switch (ENV) {
+    case ENVIRONMENTS.BROWSER:
+      this.requestAdapter = browserRequest.bind(this);
+      break;
+    case ENVIRONMENTS.NODE:
+      this.nodeAdapters = {
+        http: require("http"),
+        https: require("https")
+      };
+      this.requestAdapter = nodeRequest.bind(this);
+      break;
+    default:
+      throw "Unsupported environment";
   }
 }
 
 Regrest.prototype.request = function(requestType, url, body, cusHeader) {
   cusHeader = cusHeader || this.defaultHeader;
-  switch (this.mode) {
-    case ENVIRONMENTS.browser:
-      return browserRequest.bind(this)(...arguments);
-    case ENVIRONMENTS.node:
-      return nodeRequest.bind(this)(...arguments);
-  }
+  return this.requestAdapter(...arguments);
 };
 
 Regrest.prototype.get = function(url, cusHeader) {
