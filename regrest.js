@@ -1,3 +1,5 @@
+"use strict";
+
 (window => {
   const ENVIRONMENTS = Object.freeze({ BROWSER: 0, NODE: 1, UNKNOWN: 2 });
 
@@ -33,12 +35,15 @@
     params,
     data = null
   }) {
-    const queryString = params
-      ? `?${Object.entries(params)
-          .map(([key, value]) => `${key}=${value}`)
-          .join("&")}`
-      : "";
-    return this.requestAdapter(method, `${url}${queryString}`, data, headers);
+    // Generate query string and join it with url
+    url = `${url}${
+      params
+        ? `?${Object.entries(params)
+            .map(([key, value]) => `${key}=${value}`)
+            .join("&")}`
+        : ""
+    }`;
+    return this.requestAdapter(method, url, data, headers);
   };
 
   Regrest.prototype.get = function(url, config) {
