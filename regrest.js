@@ -3,19 +3,13 @@
 
   // Detect whether instance is ran in browser or on node js
   const ENV =
-    typeof window !== "undefined" && typeof window.document !== "undefined"
+    typeof window === "object" && typeof window.document === "object"
       ? ENVIRONMENTS.BROWSER
-      : typeof process !== "undefined" &&
-        process.versions &&
-        process.versions.node
+      : typeof process === "object" && process.versions && process.versions.node
         ? ENVIRONMENTS.NODE
         : ENVIRONMENTS.UNKNOWN;
 
   function Regrest() {
-    this.defaultHeader = {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    };
     switch (ENV) {
       case ENVIRONMENTS.BROWSER:
         this.requestAdapter = browserRequest.bind(this);
@@ -32,25 +26,35 @@
     }
   }
 
-  Regrest.prototype.request = function(requestType, url, body, cusHeader) {
-    cusHeader = cusHeader || this.defaultHeader;
-    return this.requestAdapter(...arguments);
+  Regrest.prototype.request = function({
+    method = "GET",
+    url,
+    headers = {},
+    params,
+    data = null
+  }) {
+    const queryString = params
+      ? `?${Object.entries(params)
+          .map(([key, value]) => `${key}=${value}`)
+          .join("&")}`
+      : "";
+    return this.requestAdapter(method, `${url}${queryString}`, data, headers);
   };
 
-  Regrest.prototype.get = function(url, cusHeader) {
-    return this.request("GET", url, null, cusHeader);
+  Regrest.prototype.get = function(url, config) {
+    return this.request({ url, ...config });
   };
 
-  Regrest.prototype.post = function(url, data, cusHeader) {
-    return this.request("POST", url, data, cusHeader);
+  Regrest.prototype.post = function(url, data, config) {
+    return this.request({ method: "POST", url, ...config, data });
   };
 
-  Regrest.prototype.put = function(url, data, cusHeader) {
-    return this.request("PUT", url, data, cusHeader);
+  Regrest.prototype.put = function(url, data, config) {
+    return this.request({ method: "PUT", url, ...config, data });
   };
 
-  Regrest.prototype.delete = function(url, cusHeader) {
-    return this.request("DELETE", url, null, cusHeader);
+  Regrest.prototype.delete = function(url, config) {
+    return this.request({ method: "DELETE", url, ...config });
   };
 
   // Export
@@ -70,11 +74,11 @@
   }
 
   // Unexposed helper methods and adapters
-  function browserRequest(requestType, url, body, cusHeader) {
+  function browserRequest(requestType, url, body, headers) {
     return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.open(requestType, url, true);
-      Object.entries(cusHeader).forEach(header => {
+      Object.entries(headers).forEach(header => {
         request.setRequestHeader(header[0], header[1]);
       });
       request.onload = function() {
@@ -89,14 +93,14 @@
     });
   }
 
-  function nodeRequest(requestType, url, body, cusHeader) {
+  function nodeRequest(requestType, url, body, headers) {
     return new Promise((resolve, reject) => {
       const parsedUrl = new URL(url);
       const options = {
         host: parsedUrl.host,
         path: `${parsedUrl.pathname}${parsedUrl.search}`,
         method: requestType,
-        headers: cusHeader
+        headers: headers
       };
       const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
         options,
