@@ -52,7 +52,7 @@
   };
 
   Regrest.prototype.head = function(url, config) {
-    return this.request({ ...config, url });
+    return this.request({ ...config, method: "HEAD", url });
   };
 
   Regrest.prototype.post = function(url, data, config) {
@@ -68,7 +68,7 @@
   };
 
   Regrest.prototype.options = function(url, config) {
-    return this.request({ ...config, url });
+    return this.request({ ...config, method: "OPTIONS", url });
   };
 
   Regrest.prototype.patch = function(url, data, config) {
