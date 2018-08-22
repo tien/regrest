@@ -94,9 +94,9 @@
     return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.open(requestType, url, true);
-      Object.entries(headers).forEach(header => {
-        request.setRequestHeader(header[0], header[1]);
-      });
+      Object.entries(headers).forEach(([key, value]) =>
+        request.setRequestHeader(key, value)
+      );
       request.onload = function() {
         this.status >= 200 && this.status < 400
           ? resolve({
@@ -131,10 +131,8 @@
           if (res.statusCode >= 200 && res.statusCode < 400) {
             let rawData = "";
             res.setEncoding("utf8");
-            res.on("data", chunk => {
-              rawData += chunk;
-            });
-            res.on("end", () => {
+            res.on("data", chunk => (rawData += chunk));
+            res.on("end", () =>
               resolve({
                 status: res.statusCode,
                 statusText: res.statusMessage,
@@ -143,8 +141,8 @@
                 get json() {
                   return JSON.parse(rawData);
                 }
-              });
-            });
+              })
+            );
           } else {
             reject(`${res.statusCode} ${res.statusMessage}`);
           }
