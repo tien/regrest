@@ -157,16 +157,4 @@
       req.end();
     });
   }
-
-  function prepareResponse(rawData, status, statusText, headers) {
-    return {
-      status,
-      statusText,
-      headers,
-      text: rawData,
-      get json() {
-        return JSON.parse(rawData);
-      }
-    };
-  }
 })(this);
