@@ -101,18 +101,18 @@
       });
       request.onload = function() {
         this.status >= 200 && this.status < 400
-          ? resolve(
-              prepareResponse(
-                this.response,
-                this.status,
-                this.statusText,
-                this.getAllResponseHeaders()
-              )
-            )
+          ? resolve({
+              status: this.status,
+              statusText: this.statusText,
+              text: this.response,
+              get json() {
+                return his.getAllResponseHeaders();
+              }
+            })
           : reject(`${this.status} ${this.statusText}`);
       };
       request.onerror = function() {
-        reject("connection error");
+        reject(new Error("connection error"));
       };
       request.send(body);
     });
@@ -137,14 +137,15 @@
               rawData += chunk;
             });
             res.on("end", () => {
-              resolve(
-                prepareResponse(
-                  rawData,
-                  res.statusCode,
-                  res.statusMessage,
-                  res.headers
-                )
-              );
+              resolve({
+                status: res.statusCode,
+                statusText: res.statusMessage,
+                headers: res.headers,
+                text: rawData,
+                get json() {
+                  return JSON.parse(rawData);
+                }
+              });
             });
           } else {
             reject(`${res.statusCode} ${res.statusMessage}`);
