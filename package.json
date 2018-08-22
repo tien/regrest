@@ -1,6 +1,6 @@
 {
   "name": "regrest",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "tiny http client - modern promise base - anti callbacks hell ",
   "main": "regrest.js",
   "repository": {
