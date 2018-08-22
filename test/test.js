@@ -10,12 +10,22 @@ const ENV =
 
 switch (ENV) {
   case ENVIRONMENTS.BROWSER:
-    console.log = (old => (...params) => {
-      old(...params);
-      document.getElementById("output-log").innerHTML += `<code>${params
-        .map(e => JSON.stringify(e))
-        .join("<br>")}<br></code><hr>`;
-    })(console.log);
+    Object.entries({
+      log: "white",
+      info: "#00e676",
+      warn: "#ffeb3b",
+      error: "#f44336"
+    }).forEach(
+      ([method, color]) =>
+        (console[method] = (methodToExtend => (...params) => {
+          methodToExtend(...params);
+          document.getElementById(
+            "output-log"
+          ).innerHTML += `<code style="color: ${color}">${params
+            .map(e => JSON.stringify(e))
+            .join("<br>")}<br></code><hr>`;
+        })(console[method]))
+    );
     break;
   case ENVIRONMENTS.NODE:
     regrest = require("../regrest");
@@ -85,8 +95,8 @@ switch (ENV) {
       .delete("https://jsonplaceholder.typicode.com/posts/1")
       .then(response => console.log(JSON.parse(response)));
 
-    console.log("PASSED ALL TESTS");
+    console.info("PASSED ALL TESTS");
   } catch (error) {
-    console.log(`FAILED WITH: ${error}`);
+    console.error(`FAILED WITH: ${error}`);
   }
 })();
