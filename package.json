@@ -3,6 +3,9 @@
   "version": "3.0.2",
   "description": "tiny http client - modern promise base - anti callbacks hell ",
   "main": "regrest.js",
+  "scripts": {
+    "test": "node ./test/test.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/crazycat9x/regrest.git"
