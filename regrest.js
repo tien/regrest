@@ -159,7 +159,6 @@
 
   function prepareResponse(rawData, status, statusText, headers) {
     return {
-      ok: ((status / 100) | 0) == 2,
       status,
       statusText,
       headers,
