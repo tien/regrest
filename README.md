@@ -21,7 +21,7 @@ $ npm install regrest
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/regrest@3.0.0/regrest.js"></script>
+<script src="https://unpkg.com/regrest@3.0.1/regrest.js"></script>
 ```
 
 ## Example
@@ -104,8 +104,6 @@ const config = {
 
 ```js
 {
-  // Returns true if the request received a status in the OK range (200-299)
-  ok: true,
   // Contains the status code of the response, e.g. 404 for a not found resource, 200 for a success
   status: 200,
   // A message related to the status attribute, e.g. OK for a status 200
