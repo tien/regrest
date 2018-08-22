@@ -22,7 +22,7 @@
         this.requestAdapter = nodeRequest.bind(this);
         break;
       default:
-        throw "Unsupported environment";
+        throw new Error("Unsupported environment");
     }
   }
 
@@ -110,7 +110,7 @@
           : reject(`${this.status} ${this.statusText}`);
       };
       request.onerror = function() {
-        reject(new Error("connection error"));
+        reject("connection error");
       };
       request.send(body);
     });
