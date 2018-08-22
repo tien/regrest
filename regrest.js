@@ -46,6 +46,7 @@
     return this.requestAdapter(method, url, data, headers);
   };
 
+  // Convenience methods
   Regrest.prototype.get = function(url, config) {
     return this.request({ ...config, url });
   };
@@ -100,7 +101,14 @@
       });
       request.onload = function() {
         this.status >= 200 && this.status < 400
-          ? resolve(this.response)
+          ? resolve(
+              prepareResponse(
+                this.response,
+                this.status,
+                this.statusText,
+                this.getAllResponseHeaders()
+              )
+            )
           : reject(`${this.status} ${this.statusText}`);
       };
       request.onerror = function() {
@@ -129,7 +137,14 @@
               rawData += chunk;
             });
             res.on("end", () => {
-              resolve(rawData);
+              resolve(
+                prepareResponse(
+                  rawData,
+                  res.statusCode,
+                  res.statusMessage,
+                  res.headers
+                )
+              );
             });
           } else {
             reject(`${res.statusCode} ${res.statusMessage}`);
@@ -140,5 +155,18 @@
       body && req.write(body);
       req.end();
     });
+  }
+
+  function prepareResponse(rawData, status, statusText, headers) {
+    return {
+      ok: ((status / 100) | 0) == 2,
+      status,
+      statusText,
+      headers,
+      text: rawData,
+      get json() {
+        return JSON.parse(rawData);
+      }
+    };
   }
 })(this);

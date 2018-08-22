@@ -21,7 +21,7 @@ $ npm install regrest
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/regrest@2.0.0/regrest.js"></script>
+<script src="https://unpkg.com/regrest@3.0.0/regrest.js"></script>
 ```
 
 ## Example
@@ -35,9 +35,9 @@ const regrest = require("regrest");
 
 // Use Promise
 regrest
-  .get("http://www.google.com")
-  // Print the HTML for Google homepage
-  .then(response => console.log(response))
+  .get("/man/bear/pig")
+  // Print the raw response string
+  .then(response => console.log(response.text))
   // Print any error if occurred
   .catch(error => console.log(`*** Error: ${error}`));
 
@@ -45,9 +45,9 @@ regrest
 const getGoogle = async () => {
   try {
     // Store the response in a variable
-    const response = await regrest.get("http://www.google.com");
-    // print out the response
-    console.log(response);
+    const response = await regrest.get("/foo/bar.json");
+    // print out the parsed response
+    console.log(response.json);
   } catch (error) {
     // Print any error if occurred
     console.log(`*** Error: ${error}`);
@@ -63,7 +63,7 @@ Performing a `POST` request
 ```js
 regrest
   .post("/comment", JSON.stringify({ name: "Foo", comment: "Bar" }))
-  .then(response => console.log(response))
+  .then(response => console.log(response.status, response.statusText))
   .catch(error => console.log(error));
 ```
 
@@ -97,5 +97,24 @@ const config = {
   headers: { "Content-Type": "application/json; charset=utf-8" }, // *{}
   params: { UID: 9873 },
   data: JSON.stringify(data) // *null
+};
+```
+
+### Response object attributes
+
+```js
+{
+  // Returns true if the request received a status in the OK range (200-299)
+  ok: true,
+  // Contains the status code of the response, e.g. 404 for a not found resource, 200 for a success
+  status: 200,
+  // A message related to the status attribute, e.g. OK for a status 200
+  statusText: "OK",
+  // The headers that the server responded with
+  headers: {},
+  // Response content as a string
+  text: "",
+  // Response content as JSON
+  json: {}
 };
 ```

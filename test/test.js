@@ -36,13 +36,17 @@ switch (ENV) {
   try {
     await regrest
       .get("https://jsonplaceholder.typicode.com/posts/1")
-      .then(response => console.log(JSON.parse(response)));
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
 
     await regrest
       .get("http://jsonplaceholder.typicode.com/comments", {
         params: { postId: 1 }
       })
-      .then(response => console.log(JSON.parse(response)));
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
 
     await regrest
       .post(
@@ -58,7 +62,9 @@ switch (ENV) {
           }
         }
       )
-      .then(response => console.log(JSON.parse(response)));
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
 
     await regrest
       .put(
@@ -75,7 +81,9 @@ switch (ENV) {
           }
         }
       )
-      .then(response => console.log(JSON.parse(response)));
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
 
     await regrest
       .patch(
@@ -89,11 +97,15 @@ switch (ENV) {
           }
         }
       )
-      .then(response => console.log(JSON.parse(response)));
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
 
     await regrest
       .delete("https://jsonplaceholder.typicode.com/posts/1")
-      .then(response => console.log(JSON.parse(response)));
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
 
     console.info("PASSED ALL TESTS");
   } catch (error) {
