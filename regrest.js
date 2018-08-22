@@ -1,5 +1,3 @@
-"use strict";
-
 (window => {
   const ENVIRONMENTS = Object.freeze({ BROWSER: 0, NODE: 1, UNKNOWN: 2 });
 
