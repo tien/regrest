@@ -1,5 +1,3 @@
-"use strict";
-
 (window => {
   const ENVIRONMENTS = Object.freeze({ BROWSER: 0, NODE: 1, UNKNOWN: 2 });
 
@@ -24,7 +22,7 @@
         this.requestAdapter = nodeRequest.bind(this);
         break;
       default:
-        throw "Unsupported environment";
+        throw new Error("Unsupported environment");
     }
   }
 
@@ -96,19 +94,19 @@
     return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.open(requestType, url, true);
-      Object.entries(headers).forEach(header => {
-        request.setRequestHeader(header[0], header[1]);
-      });
+      Object.entries(headers).forEach(([key, value]) =>
+        request.setRequestHeader(key, value)
+      );
       request.onload = function() {
         this.status >= 200 && this.status < 400
-          ? resolve(
-              prepareResponse(
-                this.response,
-                this.status,
-                this.statusText,
-                this.getAllResponseHeaders()
-              )
-            )
+          ? resolve({
+              status: this.status,
+              statusText: this.statusText,
+              text: this.response,
+              get json() {
+                return his.getAllResponseHeaders();
+              }
+            })
           : reject(`${this.status} ${this.statusText}`);
       };
       request.onerror = function() {
@@ -133,19 +131,18 @@
           if (res.statusCode >= 200 && res.statusCode < 400) {
             let rawData = "";
             res.setEncoding("utf8");
-            res.on("data", chunk => {
-              rawData += chunk;
-            });
-            res.on("end", () => {
-              resolve(
-                prepareResponse(
-                  rawData,
-                  res.statusCode,
-                  res.statusMessage,
-                  res.headers
-                )
-              );
-            });
+            res.on("data", chunk => (rawData += chunk));
+            res.on("end", () =>
+              resolve({
+                status: res.statusCode,
+                statusText: res.statusMessage,
+                headers: res.headers,
+                text: rawData,
+                get json() {
+                  return JSON.parse(rawData);
+                }
+              })
+            );
           } else {
             reject(`${res.statusCode} ${res.statusMessage}`);
           }
@@ -155,17 +152,5 @@
       body && req.write(body);
       req.end();
     });
-  }
-
-  function prepareResponse(rawData, status, statusText, headers) {
-    return {
-      status,
-      statusText,
-      headers,
-      text: rawData,
-      get json() {
-        return JSON.parse(rawData);
-      }
-    };
   }
 })(this);
