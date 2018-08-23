@@ -98,16 +98,27 @@
         request.setRequestHeader(key, value)
       );
       request.onload = function() {
-        this.status >= 200 && this.status < 400
-          ? resolve({
-              status: this.status,
-              statusText: this.statusText,
-              text: this.response,
-              get json() {
-                return his.getAllResponseHeaders();
-              }
-            })
-          : reject(`${this.status} ${this.statusText}`);
+        if (this.status >= 200 && this.status < 400) {
+          resolve({
+            status: this.status,
+            statusText: this.statusText,
+            headers: {
+              ...this.getAllResponseHeaders()
+                .trim()
+                .split(/[\r\n]+/)
+                .map(e => {
+                  const header = e.split(": ");
+                  return { [header[0]]: header[1] };
+                })
+            },
+            text: this.response,
+            get json() {
+              return JSON.parse(this.text);
+            }
+          });
+        } else {
+          reject(`${this.status} ${this.statusText}`);
+        }
       };
       request.onerror = function() {
         reject("connection error");
