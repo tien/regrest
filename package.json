@@ -2,7 +2,7 @@
   "name": "regrest",
   "version": "3.0.4",
   "description": "tiny http client - modern promise base - anti callbacks hell ",
-  "main": "regrest.js",
+  "main": "./build/regrest.js",
   "scripts": {
     "test": "node ./test/test.js",
     "build": "babel src -d build",
