@@ -4,7 +4,9 @@
   "description": "tiny http client - modern promise base - anti callbacks hell ",
   "main": "regrest.js",
   "scripts": {
-    "test": "node ./test/test.js"
+    "test": "node ./test/test.js",
+    "build": "babel src -d build",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,11 @@
   "homepage": "https://github.com/crazycat9x/regrest#readme",
   "bugs": {
     "url": "https://github.com/flexdinesh/npm-module-boilerplate/issues"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-minify": "^0.4.3",
+    "babel-preset-stage-3": "^6.24.1"
   }
 }
