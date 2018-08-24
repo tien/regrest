@@ -5,8 +5,7 @@
   "main": "./build/regrest.js",
   "scripts": {
     "test": "node ./test/test.js",
-    "build": "babel src -d build",
-    "prepublish": "npm run build"
+    "build": "babel src -d build"
   },
   "repository": {
     "type": "git",
