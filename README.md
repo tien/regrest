@@ -54,6 +54,8 @@ const getGoogle = async () => {
   }
 };
 
+getGoogle();
+
 // Or use callbacks
 // WE DON'T DO THAT HERE
 ```
