@@ -118,3 +118,21 @@ const config = {
   json: {}
 };
 ```
+
+### Errors handling
+
+```js
+regrest.get("/McNullington").catch(error => {
+  if (error.response) {
+    // A request was made
+    // Server responded with status call out of the 200 - 400 range
+    console.log(response.statusCode);
+    console.log(response.statusText);
+  } else if (error.request) {
+    // A request was made, but no response was received
+  } else {
+    // Something else happened
+    console.log(error.message);
+  }
+});
+```
