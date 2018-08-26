@@ -21,7 +21,7 @@ $ npm install regrest
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/regrest@3.0.6/build/regrest.js"></script>
+<script src="https://unpkg.com/regrest@3.0.7/build/regrest.js"></script>
 ```
 
 ## Example
