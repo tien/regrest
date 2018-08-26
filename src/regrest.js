@@ -117,7 +117,7 @@
                   return { [header[0]]: header[1] };
                 })
             },
-            text: this.response,
+            text: this.responseText,
             get json() {
               return JSON.parse(this.text);
             }
