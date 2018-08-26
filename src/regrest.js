@@ -15,8 +15,8 @@
     constructor(message, statusCode = null, statusText = null) {
       super(message);
       this.name = this.constructor.name;
-      this.statusCode = statusCode;
-      this.statusText = statusText;
+      this.response =
+        statusCode && statusText ? { statusCode, statusText } : null;
       if (typeof Error.captureStackTrace === "function") {
         Error.captureStackTrace(this, this.constructor);
       } else {
@@ -39,7 +39,7 @@
           this.requestAdapter = nodeRequest.bind(this);
           break;
         default:
-          throw new Error("Unsupported environment");
+          throw new NetworkError("Unsupported environment");
       }
     }
 
@@ -133,7 +133,7 @@
         }
       };
       request.onerror = function() {
-        reject(new Error("connection error"));
+        reject(new NetworkError("connection error"));
       };
       request.send(body);
     });
@@ -177,7 +177,7 @@
           }
         }
       );
-      req.on("error", e => reject(e));
+      req.on("error", e => reject(new NetworkError(e)));
       body && req.write(body);
       req.end();
     });
