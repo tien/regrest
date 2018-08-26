@@ -16,7 +16,10 @@
       super(message);
       this.name = this.constructor.name;
       this.response =
-        statusCode && statusText ? { statusCode, statusText } : null;
+        statusCode !== null && statusText !== null
+          ? { statusCode, statusText }
+          : null;
+      this.request = true;
       if (typeof Error.captureStackTrace === "function") {
         Error.captureStackTrace(this, this.constructor);
       } else {
