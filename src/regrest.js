@@ -12,11 +12,11 @@
         : ENVIRONMENTS.UNKNOWN;
 
   class NetworkError extends Error {
-    constructor(message, statusCode = null, statusText = null) {
+    constructor(message, statusCode, statusText) {
       super(message);
       this.name = this.constructor.name;
       this.response =
-        statusCode !== null && statusText !== null
+        statusCode !== undefined && statusText !== undefined
           ? { statusCode, statusText }
           : null;
       this.request = true;
