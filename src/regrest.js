@@ -16,7 +16,7 @@
       super(message);
       this.name = this.constructor.name;
       this.response =
-        statusCode !== undefined && statusText !== undefined
+        statusCode !== undefined || statusText !== undefined
           ? { statusCode, statusText }
           : null;
       this.request = true;
