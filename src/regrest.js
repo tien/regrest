@@ -11,69 +11,73 @@
         ? ENVIRONMENTS.NODE
         : ENVIRONMENTS.UNKNOWN;
 
-  function Regrest() {
-    switch (ENV) {
-      case ENVIRONMENTS.BROWSER:
-        this.requestAdapter = browserRequest.bind(this);
-        break;
-      case ENVIRONMENTS.NODE:
-        this.nodeAdapters = {
-          http: require("http"),
-          https: require("https")
-        };
-        this.requestAdapter = nodeRequest.bind(this);
-        break;
-      default:
-        throw new Error("Unsupported environment");
+  class NetworkError extends Error {
+    constructor(message, statusCode = null, statusText = null) {
+      super(message);
+      this.name = this.constructor.name;
+      this.statusCode = statusCode;
+      this.statusText = statusText;
+      if (typeof Error.captureStackTrace === "function") {
+        Error.captureStackTrace(this, this.constructor);
+      } else {
+        this.stack = new Error(message).stack;
+      }
     }
   }
 
-  Regrest.prototype.request = function({
-    method = "GET",
-    url,
-    headers = {},
-    params,
-    data = null
-  }) {
-    // Generate query string and join it with url
-    url = `${url}${
-      params
-        ? `?${Object.entries(params)
-            .map(([key, value]) => `${key}=${value}`)
-            .join("&")}`
-        : ""
-    }`;
-    return this.requestAdapter(method, url, data, headers);
-  };
+  class Regrest {
+    constructor() {
+      switch (ENV) {
+        case ENVIRONMENTS.BROWSER:
+          this.requestAdapter = browserRequest.bind(this);
+          break;
+        case ENVIRONMENTS.NODE:
+          this.nodeAdapters = {
+            http: require("http"),
+            https: require("https")
+          };
+          this.requestAdapter = nodeRequest.bind(this);
+          break;
+        default:
+          throw new Error("Unsupported environment");
+      }
+    }
 
-  // Convenience methods
-  Regrest.prototype.get = function(url, config) {
-    return this.request({ ...config, url });
-  };
+    request({ method = "GET", url, headers = {}, params, data = null }) {
+      // Generate query string and join it with url
+      url = `${url}${
+        params
+          ? `?${Object.entries(params)
+              .map(([key, value]) => `${key}=${value}`)
+              .join("&")}`
+          : ""
+      }`;
+      return this.requestAdapter(method, url, data, headers);
+    }
 
-  Regrest.prototype.head = function(url, config) {
-    return this.request({ ...config, method: "HEAD", url });
-  };
-
-  Regrest.prototype.post = function(url, data, config) {
-    return this.request({ ...config, method: "POST", url, data });
-  };
-
-  Regrest.prototype.put = function(url, data, config) {
-    return this.request({ ...config, method: "PUT", url, data });
-  };
-
-  Regrest.prototype.delete = function(url, config) {
-    return this.request({ ...config, method: "DELETE", url });
-  };
-
-  Regrest.prototype.options = function(url, config) {
-    return this.request({ ...config, method: "OPTIONS", url });
-  };
-
-  Regrest.prototype.patch = function(url, data, config) {
-    return this.request({ ...config, method: "PATCH", url, data });
-  };
+    // Convenience methods
+    get(url, config) {
+      return this.request({ ...config, url });
+    }
+    head(url, config) {
+      return this.request({ ...config, method: "HEAD", url });
+    }
+    post(url, data, config) {
+      return this.request({ ...config, method: "POST", url, data });
+    }
+    put(url, data, config) {
+      return this.request({ ...config, method: "PUT", url, data });
+    }
+    delete(url, config) {
+      return this.request({ ...config, method: "DELETE", url });
+    }
+    options(url, config) {
+      return this.request({ ...config, method: "OPTIONS", url });
+    }
+    patch(url, data, config) {
+      return this.request({ ...config, method: "PATCH", url, data });
+    }
+  }
 
   // Export
   if (
@@ -119,7 +123,13 @@
             }
           });
         } else {
-          reject(new Error(`${this.status} ${this.statusText}`));
+          reject(
+            new NetworkError(
+              `${this.status} ${this.statusText}`,
+              this.status,
+              this.statusText
+            )
+          );
         }
       };
       request.onerror = function() {
@@ -157,7 +167,13 @@
               })
             );
           } else {
-            reject(new Error(`${res.statusCode} ${res.statusMessage}`));
+            reject(
+              new NetworkError(
+                `${res.statusCode} ${res.statusMessage}`,
+                res.statusCode,
+                res.statusMessage
+              )
+            );
           }
         }
       );
