@@ -119,11 +119,11 @@
             }
           });
         } else {
-          reject(`${this.status} ${this.statusText}`);
+          reject(new Error(`${this.status} ${this.statusText}`));
         }
       };
       request.onerror = function() {
-        reject("connection error");
+        reject(new Error("connection error"));
       };
       request.send(body);
     });
@@ -157,7 +157,7 @@
               })
             );
           } else {
-            reject(`${res.statusCode} ${res.statusMessage}`);
+            reject(new Error(`${res.statusCode} ${res.statusMessage}`));
           }
         }
       );
