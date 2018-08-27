@@ -12,12 +12,12 @@
         : ENVIRONMENTS.UNKNOWN;
 
   class NetworkError extends Error {
-    constructor(message, statusCode, statusText) {
+    constructor(message, statusCode, statusText, headers) {
       super(message);
       this.name = this.constructor.name;
       this.response =
         statusCode !== undefined || statusText !== undefined
-          ? { statusCode, statusText }
+          ? { statusCode, statusText, headers }
           : null;
       this.request = true;
       if (typeof Error.captureStackTrace === "function") {
@@ -107,19 +107,18 @@
         request.setRequestHeader(key, value)
       );
       request.onload = function() {
+        const headers = {
+          ...this.getAllResponseHeaders()
+            .trim()
+            .split(/[\r\n]+/)
+            .map(header => header.split(": "))
+            .map(([key, value]) => ({ [key]: value }))
+        };
         if (this.status >= 200 && this.status < 400) {
           resolve({
             status: this.status,
             statusText: this.statusText,
-            headers: {
-              ...this.getAllResponseHeaders()
-                .trim()
-                .split(/[\r\n]+/)
-                .map(e => {
-                  const header = e.split(": ");
-                  return { [header[0]]: header[1] };
-                })
-            },
+            headers,
             text: this.responseText,
             get json() {
               return JSON.parse(this.text);
@@ -130,7 +129,8 @@
             new NetworkError(
               `${this.status} ${this.statusText}`,
               this.status,
-              this.statusText
+              this.statusText,
+              headers
             )
           );
         }
@@ -154,7 +154,7 @@
       const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
         options,
         res => {
-          if (res.statusCode >= 200 && res.statusCode < 400) {
+          if (res.statusCode >= 200 && res.statusCode < 300) {
             let rawData = "";
             res.setEncoding("utf8");
             res.on("data", chunk => (rawData += chunk));
@@ -174,7 +174,8 @@
               new NetworkError(
                 `${res.statusCode} ${res.statusMessage}`,
                 res.statusCode,
-                res.statusMessage
+                res.statusMessage,
+                res.headers
               )
             );
           }
