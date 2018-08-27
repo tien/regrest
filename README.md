@@ -126,8 +126,9 @@ regrest.get("/McNullington").catch(error => {
   if (error.response) {
     // A request was made
     // Server responded with status call out of the 200 - 400 range
-    console.log(response.statusCode);
-    console.log(response.statusText);
+    console.log(error.response.status);
+    console.log(error.response.statusText);
+    console.log(error.response.headers);
   } else if (error.request) {
     // A request was made, but no response was received
   } else {
