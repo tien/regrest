@@ -78,7 +78,8 @@ switch (ENV) {
         {
           headers: {
             "Content-type": "application/json; charset=UTF-8"
-          }
+          },
+          maxRedirects: 10
         }
       )
       .then(response =>
