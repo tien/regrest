@@ -36,8 +36,8 @@
           break;
         case ENVIRONMENTS.NODE:
           this.nodeAdapters = {
-            http: require("http"),
-            https: require("https")
+            http: require("follow-redirects").http,
+            https: require("follow-redirects").https
           };
           this.requestAdapter = nodeRequest.bind(this);
           break;
@@ -46,7 +46,14 @@
       }
     }
 
-    request({ method = "GET", url, headers = {}, params, data = null }) {
+    request({
+      method = "GET",
+      url,
+      headers = {},
+      params,
+      data = null,
+      maxRedirects
+    }) {
       // Generate query string and join it with url
       url = `${url}${
         params
@@ -55,7 +62,7 @@
               .join("&")}`
           : ""
       }`;
-      return this.requestAdapter(method, url, data, headers);
+      return this.requestAdapter(method, url, data, headers, maxRedirects);
     }
 
     // Convenience methods
@@ -142,19 +149,20 @@
     });
   }
 
-  function nodeRequest(requestType, url, body, headers) {
+  function nodeRequest(requestType, url, body, headers, maxRedirects) {
     return new Promise((resolve, reject) => {
       const parsedUrl = new URL(url);
       const options = {
         host: parsedUrl.host,
         path: `${parsedUrl.pathname}${parsedUrl.search}`,
         method: requestType,
-        headers: headers
+        headers: headers,
+        maxRedirects: maxRedirects || 5
       };
       const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
         options,
         res => {
-          if (res.statusCode >= 200 && res.statusCode < 300) {
+          if (res.statusCode >= 200 && res.statusCode < 400) {
             let rawData = "";
             res.setEncoding("utf8");
             res.on("data", chunk => (rawData += chunk));

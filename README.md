@@ -21,7 +21,7 @@ $ npm install regrest
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/regrest@3.1.2/build/regrest.js"></script>
+<script src="https://unpkg.com/regrest@3.2.0/build/regrest.js"></script>
 ```
 
 ## Example
@@ -99,6 +99,7 @@ const config = {
   headers: { "Content-Type": "application/json; charset=utf-8" }, // *{}
   params: { UID: 9873 },
   data: JSON.stringify(data) // *null
+  maxRedirects: 10 // *5
 };
 ```
 
