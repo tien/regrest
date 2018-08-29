@@ -99,6 +99,7 @@ const config = {
   headers: { "Content-Type": "application/json; charset=utf-8" }, // *{}
   params: { UID: 9873 },
   data: JSON.stringify(data) // *null
+  maxRedirects: 10 // *5
 };
 ```
 
