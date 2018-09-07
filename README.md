@@ -1,16 +1,16 @@
-# Regrest - Micro HTTP client
+# 🚀 Regrest - Micro HTTP client
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Micro Promise based HTTP client for the browser and node.js
 
-## Features
+## ✨ Features
 
 - Make [XMLHttpRequests](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) from the browser
 - Make [http](http://nodejs.org/api/http.html) requests from node.js
 - Supports the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API
 
-## Installing
+## 🏗 Installing
 
 Using npm:
 
@@ -24,7 +24,7 @@ Using cdn:
 <script src="https://unpkg.com/regrest@3.2.1/build/regrest.js"></script>
 ```
 
-## Example
+## 🎬 Example
 
 Regrest is designed to be the simplest way possible to make http calls
 
@@ -69,7 +69,7 @@ regrest
   .catch(error => console.log(error));
 ```
 
-## Documentation
+## 📚 Documentation
 
 ### Convenience methods
 
