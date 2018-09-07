@@ -119,7 +119,7 @@
             .trim()
             .split(/[\r\n]+/)
             .map(header => header.split(": "))
-            .map(([key, value]) => ({ [key]: value }))
+            .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {})
         };
         if (this.status >= 200 && this.status < 400) {
           resolve({
