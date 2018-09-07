@@ -46,13 +46,24 @@
       }
     }
 
+    /**
+     * @param {Object.<string, *>} config - Config
+     * @param {string} [config.method = "GET"] - HTTP request method
+     * @param {string} config.url - The url
+     * @param {Object.<string, string>} [config.headers = {}] - The request headers
+     * @param {Object.<string, *>} [config.params] - The request query
+     * @param {*} [config.data = null] - The data to be sent
+     * @param {number} [config.maxRedirects = 5] - Maximum redirects before error is thrown
+     * @returns {Promise}
+     * @memberof Regrest
+     */
     request({
       method = "GET",
       url,
       headers = {},
       params,
       data = null,
-      maxRedirects
+      maxRedirects = 5
     }) {
       // Generate query string and join it with url
       url = `${url}${
@@ -66,24 +77,75 @@
     }
 
     // Convenience methods
+    /**
+     * @param {string} url - The url
+     * @param {Object.<string, *>} config - Config
+     * @returns {Promise}
+     * @memberof Regrest
+     */
     get(url, config) {
       return this.request({ ...config, url });
     }
+
+    /**
+     * @param {string} url - The url
+     * @param {Object.<string, *>} config - Config
+     * @returns {Promise}
+     * @memberof Regrest
+     */
     head(url, config) {
       return this.request({ ...config, method: "HEAD", url });
     }
+
+    /**
+     * @param {string} url - The url
+     * @param {*} data - The data to be sent
+     * @param {Object.<string, *>} config - Config
+     * @returns {Promise}
+     * @memberof Regrest
+     */
     post(url, data, config) {
       return this.request({ ...config, method: "POST", url, data });
     }
+
+    /**
+     * @param {string} url - The url
+     * @param {*} data - The data to be sent
+     * @param {Object.<string, *>} config - Config
+     * @returns {Promise}
+     * @memberof Regrest
+     */
     put(url, data, config) {
       return this.request({ ...config, method: "PUT", url, data });
     }
+
+    /**
+     * @param {string} url - The url
+     * @param {Object.<string, *>} config - Config
+     * @returns {Promise}
+     * @memberof Regrest
+     */
     delete(url, config) {
       return this.request({ ...config, method: "DELETE", url });
     }
+
+    /**
+     * @param {string} url - The url
+     * @param {Object.<string, *>} config - Config
+     * @returns {Promise}
+     * @memberof Regrest
+     */
     options(url, config) {
       return this.request({ ...config, method: "OPTIONS", url });
     }
+
+    /**
+     * @param {string} url - The url
+     * @param {*} data - The data to be sent
+     * @param {Object.<string, *>} config - Config
+     * @returns {Promise}
+     * @memberof Regrest
+     */
     patch(url, data, config) {
       return this.request({ ...config, method: "PATCH", url, data });
     }
@@ -119,7 +181,7 @@
             .trim()
             .split(/[\r\n]+/)
             .map(header => header.split(": "))
-            .map(([key, value]) => ({ [key]: value }))
+            .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {})
         };
         if (this.status >= 200 && this.status < 400) {
           resolve({
@@ -157,7 +219,7 @@
         path: `${parsedUrl.pathname}${parsedUrl.search}`,
         method: requestType,
         headers: headers,
-        maxRedirects: maxRedirects || 5
+        maxRedirects: maxRedirects
       };
       const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
         options,
