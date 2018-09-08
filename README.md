@@ -16,6 +16,8 @@ Micro Promise based HTTP client for the browser and node.js
 --- | --- | --- | --- | --- | --- |
 Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | 11 ✔ |
 
+**NOTE:** If you intend to support Internet Explorer, be sure to have a poly-fill that adds a global `Promise` object
+
 ## 🏗 Installing
 
 Using npm:
