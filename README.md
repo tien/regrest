@@ -1,7 +1,8 @@
 # 🚀 Regrest - Micro HTTP client
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)
+[![npm version](https://badge.fury.io/js/regrest.svg)](https://badge.fury.io/js/regrest)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 Micro Promise based HTTP client for the browser and node.js
 
