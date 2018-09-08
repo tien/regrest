@@ -9,13 +9,10 @@ const ENV =
       : ENVIRONMENTS.UNKNOWN;
 
 class NetworkError extends Error {
-  constructor(message, status, statusText, headers) {
+  constructor(message, response) {
     super(message);
     this.name = this.constructor.name;
-    this.response =
-      status !== undefined || statusText !== undefined
-        ? { status, statusText, headers }
-        : null;
+    this.response = response;
     this.request = true;
     if (typeof Error.captureStackTrace === "function") {
       Error.captureStackTrace(this, this.constructor);
@@ -171,32 +168,25 @@ function browserRequest(requestType, url, body, headers) {
       request.setRequestHeader(key, value)
     );
     request.onload = function() {
-      const headers = {
-        ...this.getAllResponseHeaders()
-          .trim()
-          .split(/[\r\n]+/)
-          .map(header => header.split(": "))
-          .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {})
+      const response = {
+        status: this.status,
+        statusText: this.statusText,
+        headers: {
+          ...this.getAllResponseHeaders()
+            .trim()
+            .split(/[\r\n]+/)
+            .map(header => header.split(": "))
+            .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {})
+        },
+        text: this.responseText,
+        get json() {
+          return JSON.parse(this.text);
+        }
       };
       if (this.status >= 200 && this.status < 400) {
-        resolve({
-          status: this.status,
-          statusText: this.statusText,
-          headers,
-          text: this.responseText,
-          get json() {
-            return JSON.parse(this.text);
-          }
-        });
+        resolve(response);
       } else {
-        reject(
-          new NetworkError(
-            `${this.status} ${this.statusText}`,
-            this.status,
-            this.statusText,
-            headers
-          )
-        );
+        reject(new NetworkError(`${this.status} ${this.statusText}`, response));
       }
     };
     request.onerror = function() {
@@ -213,37 +203,38 @@ function nodeRequest(requestType, url, body, headers, maxRedirects) {
       host: parsedUrl.host,
       path: `${parsedUrl.pathname}${parsedUrl.search}`,
       method: requestType,
-      headers: headers,
-      maxRedirects: maxRedirects
+      headers,
+      maxRedirects
     };
     const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
       options,
       res => {
-        if (res.statusCode >= 200 && res.statusCode < 400) {
-          let rawData = "";
-          res.setEncoding("utf8");
-          res.on("data", chunk => (rawData += chunk));
-          res.on("end", () =>
-            resolve({
-              status: res.statusCode,
-              statusText: res.statusMessage,
-              headers: res.headers,
-              text: rawData,
-              get json() {
-                return JSON.parse(rawData);
-              }
-            })
-          );
-        } else {
-          reject(
-            new NetworkError(
-              `${res.statusCode} ${res.statusMessage}`,
-              res.statusCode,
-              res.statusMessage,
-              res.headers
-            )
-          );
-        }
+        let text = "";
+        res.setEncoding("utf8");
+        res.on("data", chunk => (text += chunk));
+        res.on("end", () => {
+          const response = {
+            status: res.statusCode,
+            statusText: res.statusMessage,
+            headers: res.headers,
+            get text() {
+              return text;
+            },
+            get json() {
+              return JSON.parse(text);
+            }
+          };
+          if (res.statusCode >= 200 && res.statusCode < 400) {
+            return resolve(response);
+          } else {
+            reject(
+              new NetworkError(
+                `${res.statusCode} ${res.statusMessage}`,
+                response
+              )
+            );
+          }
+        });
       }
     );
     req.on("error", e => reject(new NetworkError(e)));
