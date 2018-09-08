@@ -8,7 +8,6 @@ const nodeBabelPreset = {
 };
 
 const browserBabelPreset = {
-  plugins: ["@babel/plugin-proposal-object-rest-spread"],
   presets: [
     [
       "@babel/env",
@@ -22,11 +21,16 @@ const browserBabelPreset = {
   ]
 };
 
-gulp.task("buildNode", () =>
-  gulp
-    .src("src/regrest.js")
-    .pipe(babel(nodeBabelPreset))
-    .pipe(gulp.dest("build"))
+gulp.task(
+  "buildNode",
+  gulp.parallel(
+    () => gulp.src("src/regrest.d.ts").pipe(gulp.dest("build")),
+    () =>
+      gulp
+        .src("src/regrest.js")
+        .pipe(babel(nodeBabelPreset))
+        .pipe(gulp.dest("build"))
+  )
 );
 
 gulp.task("buildBrowser", () =>
@@ -38,4 +42,4 @@ gulp.task("buildBrowser", () =>
     .pipe(gulp.dest("build"))
 );
 
-gulp.task("build", gulp.series(gulp.parallel("buildNode", "buildBrowser")));
+gulp.task("build", gulp.parallel("buildNode", "buildBrowser"));
