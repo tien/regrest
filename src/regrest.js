@@ -78,7 +78,7 @@
   // Convenience methods
   /**
    * @param {string} url - The url
-   * @param {Object.<string, *>} config - Config
+   * @param {Object.<string, *>} [config] - Config
    * @returns {Promise}
    * @memberof Regrest
    */
@@ -88,7 +88,7 @@
 
   /**
    * @param {string} url - The url
-   * @param {Object.<string, *>} config - Config
+   * @param {Object.<string, *>} [config] - Config
    * @returns {Promise}
    * @memberof Regrest
    */
@@ -98,8 +98,8 @@
 
   /**
    * @param {string} url - The url
-   * @param {*} data - The data to be sent
-   * @param {Object.<string, *>} config - Config
+   * @param {*} [data] - The data to be sent
+   * @param {Object.<string, *>} [config] - Config
    * @returns {Promise}
    * @memberof Regrest
    */
@@ -109,8 +109,8 @@
 
   /**
    * @param {string} url - The url
-   * @param {*} data - The data to be sent
-   * @param {Object.<string, *>} config - Config
+   * @param {*} [data] - The data to be sent
+   * @param {Object.<string, *>} [config] - Config
    * @returns {Promise}
    * @memberof Regrest
    */
@@ -120,7 +120,7 @@
 
   /**
    * @param {string} url - The url
-   * @param {Object.<string, *>} config - Config
+   * @param {Object.<string, *>} [config] - Config
    * @returns {Promise}
    * @memberof Regrest
    */
@@ -130,7 +130,7 @@
 
   /**
    * @param {string} url - The url
-   * @param {Object.<string, *>} config - Config
+   * @param {Object.<string, *>} [config] - Config
    * @returns {Promise}
    * @memberof Regrest
    */
@@ -140,8 +140,8 @@
 
   /**
    * @param {string} url - The url
-   * @param {*} data - The data to be sent
-   * @param {Object.<string, *>} config - Config
+   * @param {*} [data] - The data to be sent
+   * @param {Object.<string, *>} [config] - Config
    * @returns {Promise}
    * @memberof Regrest
    */
