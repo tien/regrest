@@ -15,6 +15,13 @@
  * @property {Object.<string, string>} headers - The response headers
  * @property {string} text - The response raw text
  * @property {Object} json - The response parsed as JSON
+ *
+ * Regrest error object
+ * @typedef {Object.<string, *>} NetworkError
+ * @property {string} name - Name of the error
+ * @property {Response} response - The response object
+ * @property {boolean} request - Boolean indicating whether a request was succesfully made
+ * @property {string} stack - Error stack trace
  */
 
 const ENVIRONMENTS = Object.freeze({ BROWSER: 0, NODE: 1, UNKNOWN: 2 });
@@ -60,7 +67,7 @@ function Regrest() {
 
 /**
  * @param {Config} config
- * @returns {Promise<Response>}
+ * @returns {Promise<Response, NetworkError>}
  * @memberof Regrest
  */
 Regrest.prototype.request = function({
@@ -86,7 +93,7 @@ Regrest.prototype.request = function({
 /**
  * @param {string} url - The url
  * @param {Config} [config] - Config
- * @returns {Promise<Response>}
+ * @returns {Promise<Response, NetworkError>}
  * @memberof Regrest
  */
 Regrest.prototype.get = function(url, config) {
@@ -96,7 +103,7 @@ Regrest.prototype.get = function(url, config) {
 /**
  * @param {string} url - The url
  * @param {Config} [config] - Config
- * @returns {Promise<Response>}
+ * @returns {Promise<Response, NetworkError>}
  * @memberof Regrest
  */
 Regrest.prototype.head = function(url, config) {
@@ -107,7 +114,7 @@ Regrest.prototype.head = function(url, config) {
  * @param {string} url - The url
  * @param {*} [data] - The data to be sent
  * @param {Config} [config] - Config
- * @returns {Promise<Response>}
+ * @returns {Promise<Response, NetworkError>}
  * @memberof Regrest
  */
 Regrest.prototype.post = function(url, data, config) {
@@ -118,7 +125,7 @@ Regrest.prototype.post = function(url, data, config) {
  * @param {string} url - The url
  * @param {*} [data] - The data to be sent
  * @param {Config} [config] - Config
- * @returns {Promise<Response>}
+ * @returns {Promise<Response, NetworkError>}
  * @memberof Regrest
  */
 Regrest.prototype.put = function(url, data, config) {
@@ -128,7 +135,7 @@ Regrest.prototype.put = function(url, data, config) {
 /**
  * @param {string} url - The url
  * @param {Config} [config] - Config
- * @returns {Promise<Response>}
+ * @returns {Promise<Response, NetworkError>}
  * @memberof Regrest
  */
 Regrest.prototype.delete = function(url, config) {
@@ -138,7 +145,7 @@ Regrest.prototype.delete = function(url, config) {
 /**
  * @param {string} url - The url
  * @param {Config} [config] - Config
- * @returns {Promise<Response>}
+ * @returns {Promise<Response, NetworkError>}
  * @memberof Regrest
  */
 Regrest.prototype.options = function(url, config) {
@@ -149,7 +156,7 @@ Regrest.prototype.options = function(url, config) {
  * @param {string} url - The url
  * @param {*} [data] - The data to be sent
  * @param {Config} [config] - Config
- * @returns {Promise<Response>}
+ * @returns {Promise<Response, NetworkError>}
  * @memberof Regrest
  */
 Regrest.prototype.patch = function(url, data, config) {
