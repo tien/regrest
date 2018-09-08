@@ -20,6 +20,7 @@ yarn.lock
 src
 test
 examples
+gulpfile.js
 CHANGELOG.md
 .travis.yml
 .editorconfig
