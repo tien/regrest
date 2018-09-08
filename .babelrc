@@ -1,3 +1,15 @@
 {
-  "presets": ["stage-3"]
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", "ie >= 11"],
+          "node": true
+        },
+        "useBuiltIns": true
+      }
+    ],
+    "stage-3"
+  ]
 }
