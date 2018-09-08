@@ -28,7 +28,7 @@ switch (ENV) {
     );
     break;
   case ENVIRONMENTS.NODE:
-    regrest = require("../src/regrest");
+    regrest = require("../build/regrest");
     break;
 }
 

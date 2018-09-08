@@ -4,8 +4,8 @@
   "description": "tiny http client - modern promise base",
   "main": "./build/regrest.js",
   "scripts": {
-    "test": "node ./test/test.js",
-    "build": "babel src -d build"
+    "test": "npm run build && node ./test/test.js",
+    "build": "./node_modules/.bin/gulp build"
   },
   "repository": {
     "type": "git",
@@ -25,10 +25,15 @@
     "url": "https://github.com/flexdinesh/npm-module-boilerplate/issues"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-stage-3": "^7.0.0",
     "babel-preset-minify": "^0.4.3",
-    "babel-preset-stage-3": "^6.24.1"
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-iife": "^0.3.0",
+    "gulp-rename": "^1.4.0"
   },
   "dependencies": {
     "follow-redirects": "^1.5.7"

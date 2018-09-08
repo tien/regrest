@@ -1,6 +1,7 @@
 # 🚀 Regrest - Micro HTTP client
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)
 
 Micro Promise based HTTP client for the browser and node.js
 
@@ -16,7 +17,7 @@ Micro Promise based HTTP client for the browser and node.js
 --- | --- | --- | --- | --- | --- |
 Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | 11 ✔ |
 
-**NOTE:** If you intend to support Internet Explorer, be sure to have a poly-fill that adds a global `Promise` object
+**NOTE:** If you intend to support Internet Explorer, be sure to have a poly-fill such as [this one](https://github.com/taylorhakes/promise-polyfill) that adds a global `Promise` object
 
 ## 🏗 Installing
 
@@ -29,7 +30,7 @@ $ npm install regrest
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/regrest@3.2.3/build/regrest.js"></script>
+<script src="https://unpkg.com/regrest/build/regrest.min.js"></script>
 ```
 
 ## 🎬 Example
