@@ -141,6 +141,8 @@ regrest.get("/McNullington").catch(error => {
     console.log(error.response.status);
     console.log(error.response.statusText);
     console.log(error.response.headers);
+    console.log(error.response.text);
+    console.log(error.response.json);
   } else if (error.request) {
     // A request was made, but no response was received
   } else {
