@@ -4,7 +4,7 @@
  * @property {string} [method = "GET"] - HTTP request method
  * @property {string} [url] - The url
  * @property {Object.<string, string>} [headers = {}] - The request headers
- * @property {Object.<string, *>} [propertys] - The request query
+ * @property {Object.<string, *>} [params] - The request query
  * @property {*} [data = null] - The data to be sent
  * @property {number} [maxRedirects = 5] - Maximum redirects before error is thrown
  *
