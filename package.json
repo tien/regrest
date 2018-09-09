@@ -3,6 +3,7 @@
   "version": "3.3.0",
   "description": "tiny http client - modern promise base",
   "main": "./build/regrest.js",
+  "typings": "./build/regrest.d.ts",
   "scripts": {
     "test": "npm run build && node ./test/test.js",
     "build": "./node_modules/.bin/gulp build"
@@ -22,7 +23,7 @@
   "license": "MIT",
   "homepage": "https://github.com/crazycat9x/regrest#readme",
   "bugs": {
-    "url": "https://github.com/flexdinesh/npm-module-boilerplate/issues"
+    "url": "https://github.com/crazycat9x/regrest/issues"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
