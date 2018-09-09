@@ -236,7 +236,7 @@ function nodeRequest(requestType, url, body, headers, maxRedirects) {
         res.on("data", chunk => (response.text += chunk));
         res.on("end", () => {
           if (res.statusCode >= 200 && res.statusCode < 400) {
-            return resolve(response);
+            resolve(response);
           } else {
             reject(
               new NetworkError(
