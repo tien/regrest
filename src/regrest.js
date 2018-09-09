@@ -54,7 +54,7 @@ function Regrest() {
       this.requestAdapter = nodeRequest.bind(this);
       break;
     default:
-      throw new NetworkError("Unsupported environment");
+      throw new Error("Unsupported environment");
   }
 }
 
