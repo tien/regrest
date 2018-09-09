@@ -7,6 +7,10 @@ interface IConfig {
   maxRedirects?: number;
 }
 
+interface IConfigWithUrl {
+  url: string;
+}
+
 interface IResponse {
   status: number;
   statusText: string;
@@ -23,7 +27,7 @@ interface INetworkError extends Error {
 }
 
 interface IRegrest {
-  request(config: IConfig): Promise<IResponse>;
+  request(config: IConfig & IConfigWithUrl): Promise<IResponse>;
   get(url: string, config?: IConfig): Promise<IResponse>;
   delete(url: string, config?: IConfig): Promise<IResponse>;
   head(url: string, config?: IConfig): Promise<IResponse>;
