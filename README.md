@@ -11,6 +11,7 @@ Micro Promise based HTTP client for the browser and node.js
 - Make [XMLHttpRequests](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) from the browser
 - Make [http](http://nodejs.org/api/http.html) requests from node.js
 - Supports the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API
+- Built in [TypeScript](https://www.typescriptlang.org/) support
 
 ## 👍🏻 Browser Support
 
@@ -140,6 +141,8 @@ regrest.get("/McNullington").catch(error => {
     console.log(error.response.status);
     console.log(error.response.statusText);
     console.log(error.response.headers);
+    console.log(error.response.text);
+    console.log(error.response.json);
   } else if (error.request) {
     // A request was made, but no response was received
   } else {
