@@ -2,7 +2,7 @@
  * Config options
  * @typedef {Object.<string, *>} Config
  * @property {string} [method = "GET"] - HTTP request method
- * @property {string} url - The url
+ * @property {string} [url] - The url
  * @property {Object.<string, string>} [headers = {}] - The request headers
  * @property {Object.<string, *>} [propertys] - The request query
  * @property {*} [data = null] - The data to be sent
@@ -60,6 +60,7 @@ function Regrest() {
 
 /**
  * @param {Config} config
+ * @param {string} config.url - The url
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
