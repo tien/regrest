@@ -223,21 +223,18 @@ function nodeRequest(requestType, url, body, headers, maxRedirects) {
     const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
       options,
       res => {
-        let text = "";
+        const response = {
+          status: res.statusCode,
+          statusText: res.statusMessage,
+          headers: res.headers,
+          text: "",
+          get json() {
+            return JSON.parse(this.text);
+          }
+        };
         res.setEncoding("utf8");
-        res.on("data", chunk => (text += chunk));
+        res.on("data", chunk => (response.text += chunk));
         res.on("end", () => {
-          const response = {
-            status: res.statusCode,
-            statusText: res.statusMessage,
-            headers: res.headers,
-            get text() {
-              return text;
-            },
-            get json() {
-              return JSON.parse(text);
-            }
-          };
           if (res.statusCode >= 200 && res.statusCode < 400) {
             return resolve(response);
           } else {
