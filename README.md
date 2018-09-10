@@ -20,9 +20,8 @@ Micro Promise based HTTP client for the browser and node.js
 Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | 11 ✔ |
 
 ### NOTE
-- If you intend to support Internet Explorer, be sure to have a [poly-fill](https://github.com/taylorhakes/promise-polyfill) that adds a global `Promise` object
-- The cdn link includes IE support by default
-- Support for IE should be explicitly specified in the built process when using npm
+
+If you intend to support Internet Explorer, be sure to have a [poly-fill](https://github.com/taylorhakes/promise-polyfill) that adds a global `Promise` object
 
 ## 🏗 Installing
 
