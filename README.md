@@ -44,10 +44,12 @@ Regrest is designed to be the simplest way possible to make http calls
 Performing a `GET` request
 
 ```js
-// Import using Node or CommonJS module
+// Import using NodeJS or CommonJS module
 const regrest = require("regrest");
-// Or using ES6 module, also work for TypeScript
+// Or using ES6 module
 import regrest from "regrest"
+// Without synthetic default imports (e.g. TypeScript)
+import * as regrest from "regrest"
 
 // Use Promise
 regrest

@@ -41,4 +41,4 @@ declare namespace Regrest {
 
 declare const Regrest: Regrest.IRegrest;
 
-export default Regrest;
+export = Regrest;
