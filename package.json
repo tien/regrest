@@ -26,7 +26,7 @@
     "url": "https://github.com/crazycat9x/regrest/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.0.1",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-preset-minify": "^0.4.3",
@@ -36,6 +36,6 @@
     "gulp-rename": "^1.4.0"
   },
   "dependencies": {
-    "follow-redirects": "^1.5.7"
+    "follow-redirects": "^1.5.8"
   }
 }
