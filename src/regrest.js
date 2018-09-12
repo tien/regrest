@@ -7,6 +7,7 @@
  * @property {Object.<string, *>} [params] - The request query
  * @property {*} [data = null] - The data to be sent
  * @property {number} [maxRedirects = 5] - Maximum redirects before error is thrown
+ * @property {boolean} [withCredentials = false] - Whether cross-site Access-Control requests should be made using credentials
  *
  * Regrest response object
  * @typedef {Object.<string, *>} Response
@@ -70,7 +71,8 @@ Regrest.prototype.request = function({
   headers = {},
   params,
   data = null,
-  maxRedirects = 5
+  maxRedirects = 5,
+  withCredentials = false
 }) {
   // Generate query string and join it with url
   url = `${url}${
@@ -80,7 +82,14 @@ Regrest.prototype.request = function({
           .join("&")}`
       : ""
   }`;
-  return this.requestAdapter(method, url, data, headers, maxRedirects);
+  return this.requestAdapter(
+    method,
+    url,
+    data,
+    headers,
+    maxRedirects,
+    withCredentials
+  );
 };
 
 // Convenience methods
@@ -174,13 +183,14 @@ if (
 }
 
 // Unexposed helper methods and adapters
-function browserRequest(requestType, url, body, headers) {
+function browserRequest(requestType, url, body, headers, _, withCredentials) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open(requestType, url, true);
     Object.entries(headers).forEach(([key, value]) =>
       request.setRequestHeader(key, value)
     );
+    withCredentials && (request.withCredentials = true);
     request.onload = function() {
       const response = {
         status: this.status,

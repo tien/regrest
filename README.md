@@ -116,8 +116,9 @@ const config = {
   url: "https://some-domain.com/api/",
   headers: { "Content-Type": "application/json; charset=utf-8" }, // *{}
   params: { UID: 9873 },
-  data: JSON.stringify(data) // *null
-  maxRedirects: 10 // *5
+  data: JSON.stringify(data), // *null
+  maxRedirects: 10, // *5
+  withCredentials: true // *false, true
 };
 ```
 

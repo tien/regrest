@@ -6,6 +6,7 @@ declare namespace Regrest {
     params?: { [key: string]: any };
     data?: any | null;
     maxRedirects?: number;
+    withCredentials?: boolean;
   }
 
   export interface IConfigWithUrl extends IConfig {
