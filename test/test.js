@@ -36,13 +36,77 @@ switch (ENV) {
   try {
     await regrest
       .get("https://jsonplaceholder.typicode.com/posts/1")
-      .then(response => {
-        console.log(
-          response.arrayBuffer,
-          response.text,
-          response.json
-        );
-      });
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
+
+    await regrest
+      .get("http://jsonplaceholder.typicode.com/comments", {
+        params: { postId: 1 }
+      })
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
+
+    await regrest
+      .post(
+        "https://jsonplaceholder.typicode.com/posts",
+        JSON.stringify({
+          title: "foo",
+          body: "bar",
+          userId: 1
+        }),
+        {
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        }
+      )
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
+
+    await regrest
+      .put(
+        "https://jsonplaceholder.typicode.com/posts/1",
+        JSON.stringify({
+          id: 1,
+          title: "foo",
+          body: "bar",
+          userId: 1
+        }),
+        {
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          },
+          maxRedirects: 10
+        }
+      )
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
+
+    await regrest
+      .patch(
+        "https://jsonplaceholder.typicode.com/posts/1",
+        JSON.stringify({
+          title: "foo"
+        }),
+        {
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        }
+      )
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
+
+    await regrest
+      .delete("https://jsonplaceholder.typicode.com/posts/1")
+      .then(response =>
+        console.log(`${response.status} ${response.statusText}`)
+      );
 
     console.info("PASSED ALL TESTS");
   } catch (error) {
