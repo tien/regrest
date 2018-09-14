@@ -187,6 +187,7 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open(requestType, url, true);
+    request.responseType = "arraybuffer";
     Object.entries(headers).forEach(([key, value]) =>
       request.setRequestHeader(key, value)
     );
@@ -202,7 +203,15 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
             .map(header => header.split(": "))
             .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {})
         },
-        text: this.responseText,
+        arrayBuffer: this.response,
+        get text() {
+          return String.fromCharCode(...new Uint8Array(this.arrayBuffer));
+        },
+        get blob() {
+          return new Blob([new Uint8Array(this.arrayBuffer)], {
+            type: this.headers["content-type"].split(";")[0].trim()
+          });
+        },
         get json() {
           return JSON.parse(this.text);
         }
@@ -237,14 +246,17 @@ function nodeRequest(requestType, url, body, headers, maxRedirects) {
           status: res.statusCode,
           statusText: res.statusMessage,
           headers: res.headers,
-          text: "",
+          arrayBuffer: [],
+          get text() {
+            return this.arrayBuffer.toString("utf-8");
+          },
           get json() {
             return JSON.parse(this.text);
           }
         };
-        res.setEncoding("utf8");
-        res.on("data", chunk => (response.text += chunk));
+        res.on("data", chunk => response.arrayBuffer.push(chunk));
         res.on("end", () => {
+          response.arrayBuffer = Buffer.concat(response.arrayBuffer);
           if (res.statusCode >= 200 && res.statusCode < 400) {
             resolve(response);
           } else {
