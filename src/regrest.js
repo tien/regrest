@@ -99,19 +99,12 @@ Regrest.prototype.request = function({
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
-Regrest.prototype.get = function(url, config) {
-  return this.request({ ...config, url });
-};
-
-/**
- * @param {string} url - The url
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.head = function(url, config) {
-  return this.request({ ...config, method: "HEAD", url });
-};
+["get", "head", "delete", "options"].forEach(
+  method =>
+    (Regrest.prototype[method] = function(url, config) {
+      return this.request({ ...config, url });
+    })
+);
 
 /**
  * @param {string} url - The url
@@ -120,51 +113,12 @@ Regrest.prototype.head = function(url, config) {
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
-Regrest.prototype.post = function(url, data, config) {
-  return this.request({ ...config, method: "POST", url, data });
-};
-
-/**
- * @param {string} url - The url
- * @param {*} [data] - The data to be sent
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.put = function(url, data, config) {
-  return this.request({ ...config, method: "PUT", url, data });
-};
-
-/**
- * @param {string} url - The url
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.delete = function(url, config) {
-  return this.request({ ...config, method: "DELETE", url });
-};
-
-/**
- * @param {string} url - The url
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.options = function(url, config) {
-  return this.request({ ...config, method: "OPTIONS", url });
-};
-
-/**
- * @param {string} url - The url
- * @param {*} [data] - The data to be sent
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.patch = function(url, data, config) {
-  return this.request({ ...config, method: "PATCH", url, data });
-};
+["post", "put", "patch"].forEach(
+  method =>
+    (Regrest.prototype[method] = function(url, data, config) {
+      return this.request({ ...config, method: "PUT", url, data });
+    })
+);
 
 // Export
 if (
