@@ -104,7 +104,7 @@ Regrest.prototype.request = function({
 ["get", "head", "delete", "options"].forEach(
   method =>
     (Regrest.prototype[method] = function(url, config) {
-      return this.request({ ...config, url });
+      return this.request({ ...config, method, url });
     })
 );
 
@@ -118,7 +118,7 @@ Regrest.prototype.request = function({
 ["post", "put", "patch"].forEach(
   method =>
     (Regrest.prototype[method] = function(url, data, config) {
-      return this.request({ ...config, method: "PUT", url, data });
+      return this.request({ ...config, method, url, data });
     })
 );
 
