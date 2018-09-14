@@ -161,13 +161,13 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
         get text() {
           return String.fromCharCode(...new Uint8Array(this.arrayBuffer));
         },
+        get json() {
+          return JSON.parse(this.text);
+        },
         get blob() {
           return new Blob([new Uint8Array(this.arrayBuffer)], {
             type: this.headers["content-type"].split(";")[0].trim()
           });
-        },
-        get json() {
-          return JSON.parse(this.text);
         }
       };
       if (this.status >= 200 && this.status < 400) {
@@ -206,6 +206,14 @@ function nodeRequest(requestType, url, body, headers, maxRedirects) {
           },
           get json() {
             return JSON.parse(this.text);
+          },
+          get blob() {
+            if (typeof Blob !== "function") {
+              throw new Error("Please include Blob polyfill for Node.js");
+            }
+            return new Blob([new Uint8Array(this.arrayBuffer)], {
+              type: this.headers["content-type"].split(";")[0].trim()
+            });
           }
         };
         res.on("data", chunk => response.arrayBuffer.push(chunk));
