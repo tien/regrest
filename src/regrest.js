@@ -162,7 +162,10 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
             .trim()
             .split(/[\r\n]+/)
             .map(header => header.split(": "))
-            .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {})
+            .reduce(
+              (obj, [key, value]) => ({ ...obj, [key.toLowerCase()]: value }),
+              {}
+            )
         },
         arrayBuffer: this.response,
         get text() {
@@ -172,8 +175,9 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
           return JSON.parse(this.text);
         },
         get blob() {
+          const contentType = this.headers["content-type"] || "";
           return new Blob([new Uint8Array(this.arrayBuffer)], {
-            type: this.headers["content-type"].split(";")[0].trim()
+            type: contentType.split(";")[0].toLowerCase()
           });
         }
       };
@@ -218,8 +222,9 @@ function nodeRequest(requestType, url, body, headers, maxRedirects) {
             if (typeof Blob !== "function") {
               throw new Error("Please include Blob polyfill for Node.js");
             }
+            const contentType = this.headers["content-type"] || "";
             return new Blob([new Uint8Array(this.arrayBuffer)], {
-              type: this.headers["content-type"].split(";")[0].trim()
+              type: contentType.split(";")[0].trim()
             });
           }
         };
