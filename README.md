@@ -61,7 +61,7 @@ regrest
   .catch(error => console.log(`*** Error: ${error}`));
 
 // Or use the new async/await keywords
-const getGoogle = async () => {
+const getGood = async () => {
   try {
     // Store the response in a variable
     const response = await regrest.get("/foo/bar.json");
@@ -73,7 +73,7 @@ const getGoogle = async () => {
   }
 };
 
-getGoogle();
+getGood();
 
 // Or use callbacks
 // WE DON'T DO THAT HERE
@@ -136,7 +136,11 @@ const config = {
   // Response content as a string
   text: "",
   // Response content as JSON
-  json: {}
+  json: {},
+  // Response content as ArrayBuffer on browser and Buffer on Node js
+  arrayBuffer: instance of Buffer || instance of ArrayBuffer,
+  // Reponse content as Blob
+  blob: instance of Blob
 };
 ```
 
