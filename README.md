@@ -136,7 +136,11 @@ const config = {
   // Response content as a string
   text: "",
   // Response content as JSON
-  json: {}
+  json: {},
+  // Response content as ArrayBuffer on browser and Buffer on Node js
+  arrayBuffer: instance of Buffer || instance of ArrayBuffer,
+  // Reponse content as Blob
+  blob: instance of Blob
 };
 ```
 

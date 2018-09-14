@@ -18,7 +18,9 @@ declare namespace Regrest {
     statusText: string;
     headers: { [key: string]: string };
     text: string;
-    json: () => any;
+    json: { [key: string]: any };
+    arrayBuffer: Buffer | ArrayBuffer;
+    blob: Blob;
   }
 
   export interface INetworkError extends Error {

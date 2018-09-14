@@ -16,6 +16,8 @@
  * @property {Object.<string, string>} headers - The response headers
  * @property {string} text - The response raw text
  * @property {Object} json - The response parsed as JSON
+ * @property {Buffer|ArrayBuffer} arrayBuffer - The response as an arrayBuffer on browser or Buffer on Node js
+ * @property {Blob} blob - The response as a Blob object
  */
 
 const ENVIRONMENTS = Object.freeze({ BROWSER: 0, NODE: 1, UNKNOWN: 2 });
@@ -99,19 +101,12 @@ Regrest.prototype.request = function({
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
-Regrest.prototype.get = function(url, config) {
-  return this.request({ ...config, url });
-};
-
-/**
- * @param {string} url - The url
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.head = function(url, config) {
-  return this.request({ ...config, method: "HEAD", url });
-};
+["get", "head", "delete", "options"].forEach(
+  method =>
+    (Regrest.prototype[method] = function(url, config) {
+      return this.request({ ...config, method: method.toUpperCase(), url });
+    })
+);
 
 /**
  * @param {string} url - The url
@@ -120,51 +115,17 @@ Regrest.prototype.head = function(url, config) {
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
-Regrest.prototype.post = function(url, data, config) {
-  return this.request({ ...config, method: "POST", url, data });
-};
-
-/**
- * @param {string} url - The url
- * @param {*} [data] - The data to be sent
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.put = function(url, data, config) {
-  return this.request({ ...config, method: "PUT", url, data });
-};
-
-/**
- * @param {string} url - The url
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.delete = function(url, config) {
-  return this.request({ ...config, method: "DELETE", url });
-};
-
-/**
- * @param {string} url - The url
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.options = function(url, config) {
-  return this.request({ ...config, method: "OPTIONS", url });
-};
-
-/**
- * @param {string} url - The url
- * @param {*} [data] - The data to be sent
- * @param {Config} [config] - Config
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.patch = function(url, data, config) {
-  return this.request({ ...config, method: "PATCH", url, data });
-};
+["post", "put", "patch"].forEach(
+  method =>
+    (Regrest.prototype[method] = function(url, data, config) {
+      return this.request({
+        ...config,
+        method: method.toUpperCase(),
+        url,
+        data
+      });
+    })
+);
 
 // Export
 if (
@@ -187,6 +148,7 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open(requestType, url, true);
+    request.responseType = "arraybuffer";
     Object.entries(headers).forEach(([key, value]) =>
       request.setRequestHeader(key, value)
     );
@@ -202,9 +164,17 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
             .map(header => header.split(": "))
             .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {})
         },
-        text: this.responseText,
+        arrayBuffer: this.response,
+        get text() {
+          return String.fromCharCode(...new Uint8Array(this.arrayBuffer));
+        },
         get json() {
           return JSON.parse(this.text);
+        },
+        get blob() {
+          return new Blob([new Uint8Array(this.arrayBuffer)], {
+            type: this.headers["content-type"].split(";")[0].trim()
+          });
         }
       };
       if (this.status >= 200 && this.status < 400) {
@@ -237,14 +207,25 @@ function nodeRequest(requestType, url, body, headers, maxRedirects) {
           status: res.statusCode,
           statusText: res.statusMessage,
           headers: res.headers,
-          text: "",
+          arrayBuffer: [],
+          get text() {
+            return this.arrayBuffer.toString("utf-8");
+          },
           get json() {
             return JSON.parse(this.text);
+          },
+          get blob() {
+            if (typeof Blob !== "function") {
+              throw new Error("Please include Blob polyfill for Node.js");
+            }
+            return new Blob([new Uint8Array(this.arrayBuffer)], {
+              type: this.headers["content-type"].split(";")[0].trim()
+            });
           }
         };
-        res.setEncoding("utf8");
-        res.on("data", chunk => (response.text += chunk));
+        res.on("data", chunk => response.arrayBuffer.push(chunk));
         res.on("end", () => {
+          response.arrayBuffer = Buffer.concat(response.arrayBuffer);
           if (res.statusCode >= 200 && res.statusCode < 400) {
             resolve(response);
           } else {
