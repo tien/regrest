@@ -47,14 +47,14 @@ class NetworkError extends Error {
 function Regrest() {
   switch (ENV) {
     case ENVIRONMENTS.BROWSER:
-      this.requestAdapter = browserRequest.bind(this);
+      this.requestAdapter = xhrAdapter.bind(this);
       break;
     case ENVIRONMENTS.NODE:
       this.nodeAdapters = {
         http: require("follow-redirects").http,
         https: require("follow-redirects").https
       };
-      this.requestAdapter = nodeRequest.bind(this);
+      this.requestAdapter = httpAdapter.bind(this);
       break;
     default:
       throw new Error("Unsupported environment");
@@ -133,7 +133,7 @@ if (typeof module === "object" && module && typeof module.exports === "object") 
 }
 
 // Unexposed helper methods and adapters
-function browserRequest(requestType, url, body, headers, _, withCredentials) {
+function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open(requestType, url, true);
@@ -178,7 +178,7 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
   });
 }
 
-function nodeRequest(requestType, url, body, headers, maxRedirects) {
+function httpAdapter(requestType, url, body, headers, maxRedirects) {
   return new Promise((resolve, reject) => {
     const parsedUrl = new URL(url);
     const options = {
