@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/regrest.svg)](https://badge.fury.io/js/regrest)
+[![](https://img.shields.io/badge/gzip%20size-8%20kB-44cc11.svg)](https://cdn.jsdelivr.net/npm/regrest/build/regrest.min.js)
 [![install size](https://packagephobia.now.sh/badge?p=regrest)](https://packagephobia.now.sh/result?p=regrest)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
@@ -149,15 +150,22 @@ const config = {
 ```js
 regrest.get("/McNullington").catch(error => {
   if (error.response) {
-    // A request was made
-    // Server responded with status call out of the 200 - 400 range
+    /**
+    * A request was made but server responded
+    * with status code out of the 2XX range
+    * `error.response` is an instance of the response object
+    */
     console.log(error.response.status);
     console.log(error.response.statusText);
     console.log(error.response.headers);
-    console.log(error.response.text);
-    console.log(error.response.json);
+    // ...
   } else if (error.request) {
-    // A request was made, but no response was received
+    /**
+    * A request was made, but no response was received
+    * `error.request` is an instance of XMLHttpRequest on browser and an instance of
+    * http.ClientRequest on Node js
+    */
+    console.log(error.request);
   } else {
     // Something else happened
     console.log(error.message);
