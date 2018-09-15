@@ -27,8 +27,8 @@ declare namespace Regrest {
 
   export interface INetworkError extends Error {
     name: string;
-    response: IResponse;
-    request: ClientRequest | XMLHttpRequest;
+    response?: IResponse;
+    request?: ClientRequest | XMLHttpRequest;
     stack: string;
   }
 
