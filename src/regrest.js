@@ -31,11 +31,11 @@ const ENV =
       : ENVIRONMENTS.UNKNOWN;
 
 class NetworkError extends Error {
-  constructor(message, response) {
+  constructor(message, request, response) {
     super(message);
     this.name = this.constructor.name;
     this.response = response;
-    this.request = true;
+    this.request = request;
     if (typeof Error.captureStackTrace === "function") {
       Error.captureStackTrace(this, this.constructor);
     } else {
@@ -47,14 +47,14 @@ class NetworkError extends Error {
 function Regrest() {
   switch (ENV) {
     case ENVIRONMENTS.BROWSER:
-      this.requestAdapter = browserRequest.bind(this);
+      this.requestAdapter = xhrAdapter.bind(this);
       break;
     case ENVIRONMENTS.NODE:
       this.nodeAdapters = {
         http: require("follow-redirects").http,
         https: require("follow-redirects").https
       };
-      this.requestAdapter = nodeRequest.bind(this);
+      this.requestAdapter = httpAdapter.bind(this);
       break;
     default:
       throw new Error("Unsupported environment");
@@ -84,14 +84,7 @@ Regrest.prototype.request = function({
           .join("&")}`
       : ""
   }`;
-  return this.requestAdapter(
-    method,
-    url,
-    data,
-    headers,
-    maxRedirects,
-    withCredentials
-  );
+  return this.requestAdapter(method, url, data, headers, maxRedirects, withCredentials);
 };
 
 // Convenience methods
@@ -128,11 +121,7 @@ Regrest.prototype.request = function({
 );
 
 // Export
-if (
-  typeof module === "object" &&
-  module &&
-  typeof module.exports === "object"
-) {
+if (typeof module === "object" && module && typeof module.exports === "object") {
   /**
    * Expose Regrest as module.exports in loaders
    * that implement the Node module pattern (including browserify)
@@ -144,14 +133,12 @@ if (
 }
 
 // Unexposed helper methods and adapters
-function browserRequest(requestType, url, body, headers, _, withCredentials) {
+function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open(requestType, url, true);
     request.responseType = "arraybuffer";
-    Object.entries(headers).forEach(([key, value]) =>
-      request.setRequestHeader(key, value)
-    );
+    Object.entries(headers).forEach(([key, value]) => request.setRequestHeader(key, value));
     withCredentials && (request.withCredentials = true);
     request.onload = function() {
       const response = {
@@ -162,10 +149,7 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
             .trim()
             .split(/[\r\n]+/)
             .map(header => header.split(": "))
-            .reduce(
-              (obj, [key, value]) => ({ ...obj, [key.toLowerCase()]: value }),
-              {}
-            )
+            .reduce((obj, [key, value]) => ({ ...obj, [key.toLowerCase()]: value }), {})
         },
         arrayBuffer: this.response,
         get text() {
@@ -184,17 +168,17 @@ function browserRequest(requestType, url, body, headers, _, withCredentials) {
       if (this.status >= 200 && this.status < 400) {
         resolve(response);
       } else {
-        reject(new NetworkError(`${this.status} ${this.statusText}`, response));
+        reject(new NetworkError(`${this.status} ${this.statusText}`, request, response));
       }
     };
     request.onerror = function() {
-      reject(new NetworkError("connection error"));
+      reject(new NetworkError("connection error", request));
     };
     request.send(body);
   });
 }
 
-function nodeRequest(requestType, url, body, headers, maxRedirects) {
+function httpAdapter(requestType, url, body, headers, maxRedirects) {
   return new Promise((resolve, reject) => {
     const parsedUrl = new URL(url);
     const options = {
@@ -204,47 +188,39 @@ function nodeRequest(requestType, url, body, headers, maxRedirects) {
       headers,
       maxRedirects
     };
-    const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
-      options,
-      res => {
-        const response = {
-          status: res.statusCode,
-          statusText: res.statusMessage,
-          headers: res.headers,
-          arrayBuffer: [],
-          get text() {
-            return this.arrayBuffer.toString("utf-8");
-          },
-          get json() {
-            return JSON.parse(this.text);
-          },
-          get blob() {
-            if (typeof Blob !== "function") {
-              throw new Error("Please include Blob polyfill for Node.js");
-            }
-            const contentType = this.headers["content-type"] || "";
-            return new Blob([new Uint8Array(this.arrayBuffer)], {
-              type: contentType.split(";")[0].trim()
-            });
+    const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(options, res => {
+      const response = {
+        status: res.statusCode,
+        statusText: res.statusMessage,
+        headers: res.headers,
+        arrayBuffer: [],
+        get text() {
+          return this.arrayBuffer.toString("utf-8");
+        },
+        get json() {
+          return JSON.parse(this.text);
+        },
+        get blob() {
+          if (typeof Blob !== "function") {
+            throw new Error("Please include Blob polyfill for Node.js");
           }
-        };
-        res.on("data", chunk => response.arrayBuffer.push(chunk));
-        res.on("end", () => {
-          response.arrayBuffer = Buffer.concat(response.arrayBuffer);
-          if (res.statusCode >= 200 && res.statusCode < 400) {
-            resolve(response);
-          } else {
-            reject(
-              new NetworkError(
-                `${res.statusCode} ${res.statusMessage}`,
-                response
-              )
-            );
-          }
-        });
-      }
-    );
-    req.on("error", e => reject(new NetworkError(e)));
+          const contentType = this.headers["content-type"] || "";
+          return new Blob([new Uint8Array(this.arrayBuffer)], {
+            type: contentType.split(";")[0].trim()
+          });
+        }
+      };
+      res.on("data", chunk => response.arrayBuffer.push(chunk));
+      res.on("end", () => {
+        response.arrayBuffer = Buffer.concat(response.arrayBuffer);
+        if (res.statusCode >= 200 && res.statusCode < 400) {
+          resolve(response);
+        } else {
+          reject(new NetworkError(`${res.statusCode} ${res.statusMessage}`, req, response));
+        }
+      });
+    });
+    req.on("error", e => reject(new NetworkError(e.message, req)));
     body && req.write(body);
     req.end();
   });

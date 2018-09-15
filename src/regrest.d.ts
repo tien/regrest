@@ -1,3 +1,5 @@
+import { ClientRequest } from "http";
+
 declare namespace Regrest {
   export interface IConfig {
     method?: string;
@@ -25,8 +27,8 @@ declare namespace Regrest {
 
   export interface INetworkError extends Error {
     name: string;
-    response: IResponse;
-    request: boolean;
+    response?: IResponse;
+    request?: ClientRequest | XMLHttpRequest;
     stack: string;
   }
 
