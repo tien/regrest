@@ -36,6 +36,7 @@
     "gulp-rename": "^1.4.0"
   },
   "dependencies": {
+    "@types/node": "^10.9.4",
     "follow-redirects": "^1.5.8"
   }
 }
