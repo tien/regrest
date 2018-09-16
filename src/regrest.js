@@ -16,7 +16,7 @@
  * @property {Object.<string, string>} headers - The response headers
  * @property {string} text - The response raw text
  * @property {Object} json - The response parsed as JSON
- * @property {Buffer|ArrayBuffer} arrayBuffer - The response as an arrayBuffer on browser or Buffer on Node js
+ * @property {Buffer|Blob} arrayBuffer - The response as an arrayBuffer on browser or Buffer on Node js
  * @property {Blob} blob - The response as a Blob object
  */
 

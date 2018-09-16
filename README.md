@@ -139,7 +139,7 @@ const config = {
   // Response content as JSON
   json: {},
   // Response content as Blob on browser and Buffer on Node js
-  arrayBuffer: instance of Blob || instance of ArrayBuffer,
+  arrayBuffer: instance of Blob || instance of Buffer,
   // Reponse content as Blob
   blob: instance of Blob
 };
