@@ -9,7 +9,7 @@
 Micro Promise based HTTP client for the browser and node.js
 
 ## 🤫 Current state
-This project is still a work in progress, V4 is coming soon. In the mean time, have a play with it 🙂
+This project is still a work in progress. In the mean time, have a play with it 🙂
 
 ## ✨ Features
 
