@@ -138,8 +138,8 @@ const config = {
   text: "",
   // Response content as JSON
   json: {},
-  // Response content as ArrayBuffer on browser and Buffer on Node js
-  arrayBuffer: instance of Buffer || instance of ArrayBuffer,
+  // Response content as Blob on browser and Buffer on Node js
+  arrayBuffer: instance of Blob || instance of ArrayBuffer,
   // Reponse content as Blob
   blob: instance of Blob
 };

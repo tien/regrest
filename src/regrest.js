@@ -137,10 +137,10 @@ function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open(requestType, url, true);
-    request.responseType = "arraybuffer";
     Object.entries(headers).forEach(([key, value]) => request.setRequestHeader(key, value));
     withCredentials && (request.withCredentials = true);
     request.onload = function() {
+      const contentType = (this.getResponseHeader("Content-Type") || "").split(";")[0].trim();
       const response = {
         status: this.status,
         statusText: this.statusText,
@@ -151,18 +151,15 @@ function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
             .map(header => header.split(": "))
             .reduce((obj, [key, value]) => ({ ...obj, [key.toLowerCase()]: value }), {})
         },
-        arrayBuffer: this.response,
-        get text() {
-          return new TextDecoder("utf-8").decode(new Uint8Array(this.arrayBuffer));
+        text: this.responseText,
+        get arrayBuffer() {
+          return new Blob([request.response], { type: contentType });
         },
         get json() {
           return JSON.parse(this.text);
         },
         get blob() {
-          const contentType = this.headers["content-type"] || "";
-          return new Blob([new Uint8Array(this.arrayBuffer)], {
-            type: contentType.split(";")[0].toLowerCase()
-          });
+          return new Blob([request.response], { type: contentType });
         }
       };
       if (this.status >= 200 && this.status < 400) {
