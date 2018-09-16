@@ -19,7 +19,7 @@ declare namespace Regrest {
     headers: { [key: string]: string };
     text: string;
     json: { [key: string]: any };
-    arrayBuffer: Buffer | ArrayBuffer;
+    arrayBuffer: ArrayBuffer | any;
     blob: Blob;
   }
 
