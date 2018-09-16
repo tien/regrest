@@ -16,7 +16,7 @@
  * @property {Object.<string, string>} headers - The response headers
  * @property {string} text - The response raw text
  * @property {Object} json - The response parsed as JSON
- * @property {Buffer|Blob} arrayBuffer - The response as an arrayBuffer on browser or Buffer on Node js
+ * @property {Blob|any} arrayBuffer - The response as an Blob on browser or Buffer on Node js
  * @property {Blob} blob - The response as a Blob object
  */
 
@@ -152,14 +152,14 @@ function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
             .reduce((obj, [key, value]) => ({ ...obj, [key.toLowerCase()]: value }), {})
         },
         text: this.responseText,
-        get arrayBuffer() {
-          return new Blob([request.response], { type: contentType });
-        },
         get json() {
           return JSON.parse(this.text);
         },
         get blob() {
           return new Blob([request.response], { type: contentType });
+        },
+        get arrayBuffer() {
+          return this.blob;
         }
       };
       if (this.status >= 200 && this.status < 400) {
