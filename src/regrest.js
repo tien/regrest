@@ -153,7 +153,7 @@ function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
         },
         arrayBuffer: this.response,
         get text() {
-          return String.fromCharCode(...new Uint8Array(this.arrayBuffer));
+          return new TextDecoder("utf-8").decode(new Uint8Array(this.arrayBuffer));
         },
         get json() {
           return JSON.parse(this.text);
