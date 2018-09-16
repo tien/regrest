@@ -111,12 +111,7 @@ Regrest.prototype.request = function({
 ["post", "put", "patch"].forEach(
   method =>
     (Regrest.prototype[method] = function(url, data, config) {
-      return this.request({
-        ...config,
-        method: method.toUpperCase(),
-        url,
-        data
-      });
+      return this.request({ ...config, method: method.toUpperCase(), url, data });
     })
 );
 
