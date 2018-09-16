@@ -8,9 +8,6 @@
 
 Micro Promise based HTTP client for the browser and node.js
 
-## 🤫 Current state
-This project is still a work in progress. In the mean time, have a play with it 🙂
-
 ## ✨ Features
 
 - Make [XMLHttpRequests](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) from the browser
