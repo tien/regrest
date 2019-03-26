@@ -28,3 +28,4 @@ CHANGELOG.md
 .eslintrc
 .babelrc
 .gitignore
+.gitattributes
