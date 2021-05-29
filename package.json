@@ -6,7 +6,7 @@
   "typings": "./lib/regrest.d.ts",
   "scripts": {
     "build": "gulp build",
-    "test": "yarn build && node ./test/test.js",
+    "test": "jest",
     "release": "release-it"
   },
   "repository": {
@@ -34,11 +34,13 @@
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",
+    "@types/jest": "^26.0.23",
     "babel-preset-minify": "^0.5.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-iife": "^0.4.0",
     "gulp-rename": "^2.0.0",
+    "jest": "^27.0.1",
     "prettier": "^2.3.0",
     "release-it": "^14.7.0"
   },
