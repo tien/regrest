@@ -27,8 +27,8 @@ const ENV =
   typeof window === "object" && typeof window.document === "object"
     ? ENVIRONMENTS.BROWSER
     : typeof module === "object" && module && typeof module.exports === "object"
-      ? ENVIRONMENTS.NODE
-      : ENVIRONMENTS.UNKNOWN;
+    ? ENVIRONMENTS.NODE
+    : ENVIRONMENTS.UNKNOWN;
 
 class NetworkError extends Error {
   constructor(message, request, response) {
@@ -52,7 +52,7 @@ function Regrest() {
     case ENVIRONMENTS.NODE:
       this.nodeAdapters = {
         http: require("follow-redirects").http,
-        https: require("follow-redirects").https
+        https: require("follow-redirects").https,
       };
       this.requestAdapter = httpAdapter.bind(this);
       break;
@@ -67,14 +67,14 @@ function Regrest() {
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
-Regrest.prototype.request = function({
+Regrest.prototype.request = function ({
   method = "GET",
   url,
   headers = {},
   params,
   data = null,
   maxRedirects = 5,
-  withCredentials = false
+  withCredentials = false,
 }) {
   // Generate query string and join it with url
   url = `${url}${
@@ -84,7 +84,14 @@ Regrest.prototype.request = function({
           .join("&")}`
       : ""
   }`;
-  return this.requestAdapter(method, url, data, headers, maxRedirects, withCredentials);
+  return this.requestAdapter(
+    method,
+    url,
+    data,
+    headers,
+    maxRedirects,
+    withCredentials
+  );
 };
 
 // Convenience methods
@@ -95,8 +102,8 @@ Regrest.prototype.request = function({
  * @memberof Regrest
  */
 ["get", "head", "delete", "options"].forEach(
-  method =>
-    (Regrest.prototype[method] = function(url, config) {
+  (method) =>
+    (Regrest.prototype[method] = function (url, config) {
       return this.request({ ...config, method: method.toUpperCase(), url });
     })
 );
@@ -109,14 +116,23 @@ Regrest.prototype.request = function({
  * @memberof Regrest
  */
 ["post", "put", "patch"].forEach(
-  method =>
-    (Regrest.prototype[method] = function(url, data, config) {
-      return this.request({ ...config, method: method.toUpperCase(), url, data });
+  (method) =>
+    (Regrest.prototype[method] = function (url, data, config) {
+      return this.request({
+        ...config,
+        method: method.toUpperCase(),
+        url,
+        data,
+      });
     })
 );
 
 // Export
-if (typeof module === "object" && module && typeof module.exports === "object") {
+if (
+  typeof module === "object" &&
+  module &&
+  typeof module.exports === "object"
+) {
   /**
    * Expose Regrest as module.exports in loaders
    * that implement the Node module pattern (including browserify)
@@ -132,10 +148,14 @@ function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open(requestType, url, true);
-    Object.entries(headers).forEach(([key, value]) => request.setRequestHeader(key, value));
+    Object.entries(headers).forEach(([key, value]) =>
+      request.setRequestHeader(key, value)
+    );
     withCredentials && (request.withCredentials = true);
-    request.onload = function() {
-      const contentType = (this.getResponseHeader("Content-Type") || "").split(";")[0].trim();
+    request.onload = function () {
+      const contentType = (this.getResponseHeader("Content-Type") || "")
+        .split(";")[0]
+        .trim();
       const response = {
         status: this.status,
         statusText: this.statusText,
@@ -143,8 +163,11 @@ function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
           ...this.getAllResponseHeaders()
             .trim()
             .split(/[\r\n]+/)
-            .map(header => header.split(": "))
-            .reduce((obj, [key, value]) => ({ ...obj, [key.toLowerCase()]: value }), {})
+            .map((header) => header.split(": "))
+            .reduce(
+              (obj, [key, value]) => ({ ...obj, [key.toLowerCase()]: value }),
+              {}
+            ),
         },
         text: this.responseText,
         get json() {
@@ -155,15 +178,21 @@ function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
         },
         get arrayBuffer() {
           return this.blob;
-        }
+        },
       };
       if (this.status >= 200 && this.status < 400) {
         resolve(response);
       } else {
-        reject(new NetworkError(`${this.status} ${this.statusText}`, request, response));
+        reject(
+          new NetworkError(
+            `${this.status} ${this.statusText}`,
+            request,
+            response
+          )
+        );
       }
     };
-    request.onerror = function() {
+    request.onerror = function () {
       reject(new NetworkError("connection error", request));
     };
     request.send(body);
@@ -178,41 +207,50 @@ function httpAdapter(requestType, url, body, headers, maxRedirects) {
       path: `${parsedUrl.pathname}${parsedUrl.search}`,
       method: requestType,
       headers,
-      maxRedirects
+      maxRedirects,
     };
-    const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(options, res => {
-      const response = {
-        status: res.statusCode,
-        statusText: res.statusMessage,
-        headers: res.headers,
-        arrayBuffer: [],
-        get text() {
-          return this.arrayBuffer.toString("utf-8");
-        },
-        get json() {
-          return JSON.parse(this.text);
-        },
-        get blob() {
-          if (typeof Blob !== "function") {
-            throw new Error("Please include Blob polyfill for Node.js");
+    const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
+      options,
+      (res) => {
+        const response = {
+          status: res.statusCode,
+          statusText: res.statusMessage,
+          headers: res.headers,
+          arrayBuffer: [],
+          get text() {
+            return this.arrayBuffer.toString("utf-8");
+          },
+          get json() {
+            return JSON.parse(this.text);
+          },
+          get blob() {
+            if (typeof Blob !== "function") {
+              throw new Error("Please include Blob polyfill for Node.js");
+            }
+            const contentType = this.headers["content-type"] || "";
+            return new Blob([new Uint8Array(this.arrayBuffer)], {
+              type: contentType.split(";")[0].trim(),
+            });
+          },
+        };
+        res.on("data", (chunk) => response.arrayBuffer.push(chunk));
+        res.on("end", () => {
+          response.arrayBuffer = Buffer.concat(response.arrayBuffer);
+          if (res.statusCode >= 200 && res.statusCode < 400) {
+            resolve(response);
+          } else {
+            reject(
+              new NetworkError(
+                `${res.statusCode} ${res.statusMessage}`,
+                req,
+                response
+              )
+            );
           }
-          const contentType = this.headers["content-type"] || "";
-          return new Blob([new Uint8Array(this.arrayBuffer)], {
-            type: contentType.split(";")[0].trim()
-          });
-        }
-      };
-      res.on("data", chunk => response.arrayBuffer.push(chunk));
-      res.on("end", () => {
-        response.arrayBuffer = Buffer.concat(response.arrayBuffer);
-        if (res.statusCode >= 200 && res.statusCode < 400) {
-          resolve(response);
-        } else {
-          reject(new NetworkError(`${res.statusCode} ${res.statusMessage}`, req, response));
-        }
-      });
-    });
-    req.on("error", e => reject(new NetworkError(e.message, req)));
+        });
+      }
+    );
+    req.on("error", (e) => reject(new NetworkError(e.message, req)));
     body && req.write(body);
     req.end();
   });

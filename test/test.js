@@ -5,8 +5,8 @@ const ENV =
   typeof window === "object" && typeof window.document === "object"
     ? ENVIRONMENTS.BROWSER
     : typeof process === "object" && process.versions && process.versions.node
-      ? ENVIRONMENTS.NODE
-      : ENVIRONMENTS.UNKNOWN;
+    ? ENVIRONMENTS.NODE
+    : ENVIRONMENTS.UNKNOWN;
 
 switch (ENV) {
   case ENVIRONMENTS.BROWSER:
@@ -14,17 +14,20 @@ switch (ENV) {
       log: "white",
       info: "#00e676",
       warn: "#ffeb3b",
-      error: "#f44336"
+      error: "#f44336",
     }).forEach(
       ([method, color]) =>
-        (console[method] = (methodToExtend => (...params) => {
-          methodToExtend(...params);
-          document.getElementById(
-            "output-log"
-          ).innerHTML += `<code style="color: ${color}">${params
-            .map(e => JSON.stringify(e))
-            .join("<br>")}<br></code><hr>`;
-        })(console[method]))
+        (console[method] = (
+          (methodToExtend) =>
+          (...params) => {
+            methodToExtend(...params);
+            document.getElementById(
+              "output-log"
+            ).innerHTML += `<code style="color: ${color}">${params
+              .map((e) => JSON.stringify(e))
+              .join("<br>")}<br></code><hr>`;
+          }
+        )(console[method]))
     );
     break;
   case ENVIRONMENTS.NODE:
@@ -36,15 +39,15 @@ switch (ENV) {
   try {
     await regrest
       .get("https://jsonplaceholder.typicode.com/posts/1")
-      .then(response =>
+      .then((response) =>
         console.log(`${response.status} ${response.statusText}`)
       );
 
     await regrest
       .get("http://jsonplaceholder.typicode.com/comments", {
-        params: { postId: 1 }
+        params: { postId: 1 },
       })
-      .then(response =>
+      .then((response) =>
         console.log(`${response.status} ${response.statusText}`)
       );
 
@@ -54,15 +57,15 @@ switch (ENV) {
         JSON.stringify({
           title: "foo",
           body: "bar",
-          userId: 1
+          userId: 1,
         }),
         {
           headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
+            "Content-type": "application/json; charset=UTF-8",
+          },
         }
       )
-      .then(response =>
+      .then((response) =>
         console.log(`${response.status} ${response.statusText}`)
       );
 
@@ -73,16 +76,16 @@ switch (ENV) {
           id: 1,
           title: "foo",
           body: "bar",
-          userId: 1
+          userId: 1,
         }),
         {
           headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
           },
-          maxRedirects: 10
+          maxRedirects: 10,
         }
       )
-      .then(response =>
+      .then((response) =>
         console.log(`${response.status} ${response.statusText}`)
       );
 
@@ -90,21 +93,21 @@ switch (ENV) {
       .patch(
         "https://jsonplaceholder.typicode.com/posts/1",
         JSON.stringify({
-          title: "foo"
+          title: "foo",
         }),
         {
           headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
+            "Content-type": "application/json; charset=UTF-8",
+          },
         }
       )
-      .then(response =>
+      .then((response) =>
         console.log(`${response.status} ${response.statusText}`)
       );
 
     await regrest
       .delete("https://jsonplaceholder.typicode.com/posts/1")
-      .then(response =>
+      .then((response) =>
         console.log(`${response.status} ${response.statusText}`)
       );
 

@@ -17,9 +17,9 @@ Micro Promise based HTTP client for the browser and node.js
 
 ## 👍🏻 Browser Support
 
-![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png) | ![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) | ![IE](https://raw.github.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png) |
---- | --- | --- | --- | --- | --- |
-Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | 11 ✔ |
+| ![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png) | ![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) | ![IE](https://raw.github.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png) |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Latest ✔                                                                                 | Latest ✔                                                                                    | Latest ✔                                                                                 | Latest ✔                                                                              | Latest ✔                                                                           | 11 ✔                                                                                                                         |
 
 ### NOTE
 
@@ -49,17 +49,17 @@ Performing a `GET` request
 // Import using NodeJS or CommonJS module
 const regrest = require("regrest");
 // Or using ES6 module
-import regrest from "regrest"
+import regrest from "regrest";
 // Without synthetic default imports (e.g. TypeScript)
-import * as regrest from "regrest"
+import * as regrest from "regrest";
 
 // Use Promise
 regrest
   .get("/man/bear/pig")
   // Print the raw response string
-  .then(response => console.log(response.text))
+  .then((response) => console.log(response.text))
   // Print any error if occurred
-  .catch(error => console.log(`*** Error: ${error}`));
+  .catch((error) => console.log(`*** Error: ${error}`));
 
 // Or use the new async/await keywords
 const getGood = async () => {
@@ -85,8 +85,8 @@ Performing a `POST` request
 ```js
 regrest
   .post("/comment", JSON.stringify({ name: "Foo", comment: "Bar" }))
-  .then(response => console.log(response.status, response.statusText))
-  .catch(error => console.log(error));
+  .then((response) => console.log(response.status, response.statusText))
+  .catch((error) => console.log(error));
 ```
 
 ## 📚 Documentation
@@ -120,7 +120,7 @@ const config = {
   params: { UID: 9873 },
   data: JSON.stringify(data), // *null
   maxRedirects: 10, // *5
-  withCredentials: true // *false, true
+  withCredentials: true, // *false, true
 };
 ```
 
@@ -148,23 +148,23 @@ const config = {
 ### Errors handling
 
 ```js
-regrest.get("/McNullington").catch(error => {
+regrest.get("/McNullington").catch((error) => {
   if (error.response) {
     /**
-    * A request was made but server responded
-    * with status code out of the 2XX range
-    * `error.response` is an instance of the response object
-    */
+     * A request was made but server responded
+     * with status code out of the 2XX range
+     * `error.response` is an instance of the response object
+     */
     console.log(error.response.status);
     console.log(error.response.statusText);
     console.log(error.response.headers);
     // ...
   } else if (error.request) {
     /**
-    * A request was made, but no response was received
-    * `error.request` is an instance of XMLHttpRequest on browser and an instance of
-    * http.ClientRequest on Node js
-    */
+     * A request was made, but no response was received
+     * `error.request` is an instance of XMLHttpRequest on browser and an instance of
+     * http.ClientRequest on Node js
+     */
     console.log(error.request);
   } else {
     // Something else happened

@@ -4206,6 +4206,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"prettier@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "prettier@npm:2.3.0"
+  bin:
+    prettier: bin-prettier.js
+  checksum: 652640cc8b71bc5277cfb8bf6f161783ca588efcf683c3d630837b39da8d57fef35c9e00ae5855a8e3c75136c42274046c913cc2b2d2968558315f31c6a26981
+  languageName: node
+  linkType: hard
+
 "pretty-hrtime@npm:^1.0.0":
   version: 1.0.3
   resolution: "pretty-hrtime@npm:1.0.3"
@@ -4400,6 +4409,7 @@ fsevents@^1.2.7:
     gulp-babel: ^8.0.0
     gulp-iife: ^0.4.0
     gulp-rename: ^2.0.0
+    prettier: ^2.3.0
   languageName: unknown
   linkType: soft
 
