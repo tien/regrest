@@ -2636,7 +2636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.7.0":
+"follow-redirects@npm:^1.14.1":
   version: 1.14.1
   resolution: "follow-redirects@npm:1.14.1"
   peerDependenciesMeta:
@@ -4395,7 +4395,7 @@ fsevents@^1.2.7:
     "@babel/core": ^7.14.3
     "@babel/preset-env": ^7.14.4
     babel-preset-minify: ^0.5.1
-    follow-redirects: ^1.7.0
+    follow-redirects: ^1.14.1
     gulp: ^4.0.2
     gulp-babel: ^8.0.0
     gulp-iife: ^0.4.0
