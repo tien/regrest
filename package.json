@@ -37,16 +37,5 @@
   },
   "dependencies": {
     "follow-redirects": "^1.14.1"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "defaults",
-      "ie >= 9"
-    ]
   }
 }
