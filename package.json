@@ -5,8 +5,8 @@
   "main": "./build/regrest.js",
   "typings": "./build/regrest.d.ts",
   "scripts": {
-    "test": "npm run build && node ./test/test.js",
-    "build": "./node_modules/.bin/gulp build"
+    "build": "gulp build",
+    "test": "yarn build && node ./test/test.js"
   },
   "repository": {
     "type": "git",
@@ -26,16 +26,26 @@
     "url": "https://github.com/tien/regrest/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
-    "@babel/preset-env": "^7.4.2",
-    "babel-preset-minify": "^0.4.3",
-    "gulp": "^4.0.0",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "babel-preset-minify": "^0.5.1",
+    "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-iife": "^0.4.0",
-    "gulp-rename": "^1.4.0"
+    "gulp-rename": "^2.0.0"
   },
   "dependencies": {
     "follow-redirects": "^1.7.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "defaults",
+      "ie >= 9"
+    ]
   }
 }

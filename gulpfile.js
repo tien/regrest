@@ -4,32 +4,11 @@ const iife = require("gulp-iife");
 const rename = require("gulp-rename");
 
 const nodeBabelPreset = {
-  plugins: ["@babel/plugin-proposal-object-rest-spread"],
-  presets: [
-    [
-      "@babel/env",
-      {
-        targets: {
-          browsers: ["last 2 versions", "ie >= 9"],
-          node: true
-        }
-      }
-    ]
-  ]
+  presets: ["@babel/preset-env"],
 };
 
 const browserBabelPreset = {
-  presets: [
-    [
-      "@babel/env",
-      {
-        targets: {
-          browsers: ["last 2 versions", "ie >= 9"]
-        }
-      }
-    ],
-    "minify"
-  ]
+  presets: ["@babel/preset-env", "minify"],
 };
 
 gulp.task(

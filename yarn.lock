@@ -21,7 +21,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.14.3, @babel/core@npm:^7.4.0":
+"@babel/core@npm:7.14.3, @babel/core@npm:^7.14.3":
   version: 7.14.3
   resolution: "@babel/core@npm:7.14.3"
   dependencies:
@@ -453,7 +453,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-object-rest-spread@npm:^7.14.4, @babel/plugin-proposal-object-rest-spread@npm:^7.4.0":
+"@babel/plugin-proposal-object-rest-spread@npm:^7.14.4":
   version: 7.14.4
   resolution: "@babel/plugin-proposal-object-rest-spread@npm:7.14.4"
   dependencies:
@@ -1061,7 +1061,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-env@npm:^7.4.2":
+"@babel/preset-env@npm:^7.14.4":
   version: 7.14.4
   resolution: "@babel/preset-env@npm:7.14.4"
   dependencies:
@@ -1484,13 +1484,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-helper-evaluate-path@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-helper-evaluate-path@npm:0.4.3"
-  checksum: 286c862ce929d70c602d398738193e97001cad97dabaa7578d849534af6df9863a54c2cfc7e2fc3ac6c0d5ace52be7566acf3eb4924fedb413e2c3730c65d7c5
-  languageName: node
-  linkType: hard
-
 "babel-helper-evaluate-path@npm:^0.5.0":
   version: 0.5.0
   resolution: "babel-helper-evaluate-path@npm:0.5.0"
@@ -1533,10 +1526,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-helper-to-multiple-sequence-expressions@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-helper-to-multiple-sequence-expressions@npm:0.4.3"
-  checksum: 106ae1f431f7f6b674f3edf61f81567b969e73f48faef91baeddf4154ed56f491f31652a9503cd0776ab6abb12a1cfa3132bb7a9512526131cece330be664839
+"babel-helper-to-multiple-sequence-expressions@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "babel-helper-to-multiple-sequence-expressions@npm:0.5.0"
+  checksum: 2bd75a19581c9709567c9083e2e2c6169d9f326a646b469cb702aee4e629cac3b1401d0e4397888498e63f45f3d799ef2abb02632ad4096a4d2ac45708beae07
   languageName: node
   linkType: hard
 
@@ -1549,33 +1542,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-minify-builtins@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-plugin-minify-builtins@npm:0.4.3"
-  dependencies:
-    babel-helper-evaluate-path: ^0.4.3
-  checksum: cf1bb4c411c56249b271b99b28f1c05459390bcd635f368bcdfcd152bb0bcaa646d9891e62e41a95bd921ff109bf8183d3089f816aefd21e342c84897a98b30e
+"babel-plugin-minify-builtins@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "babel-plugin-minify-builtins@npm:0.5.0"
+  checksum: 8b723785b6dafb6d0747a0dd90432f80671f175d0dbbd801b6b9e5a066dc350001a74554ace3f7b12eb2969bdec93dfd47f92c16dc789c42174e94058f6e0d12
   languageName: node
   linkType: hard
 
-"babel-plugin-minify-constant-folding@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-plugin-minify-constant-folding@npm:0.4.3"
+"babel-plugin-minify-constant-folding@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "babel-plugin-minify-constant-folding@npm:0.5.0"
   dependencies:
-    babel-helper-evaluate-path: ^0.4.3
-  checksum: afe54b5e6e52c8cc73f93bc9109f8bec37da5894ffd2eaa8ad756b88b50f202ab25ba0076936a398d8bd72724fa3f00a1969fa2e17e2c4450e3bdcd30a407752
+    babel-helper-evaluate-path: ^0.5.0
+  checksum: b30872fa73c8c7d5f1cc1c82331df5a64d5323e9ac079614defcdd8de60bf3e20106116022e142e9460e635b9b1a0e793252a3d453f8063e4909112419248ada
   languageName: node
   linkType: hard
 
-"babel-plugin-minify-dead-code-elimination@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-plugin-minify-dead-code-elimination@npm:0.4.3"
+"babel-plugin-minify-dead-code-elimination@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "babel-plugin-minify-dead-code-elimination@npm:0.5.1"
   dependencies:
-    babel-helper-evaluate-path: ^0.4.3
+    babel-helper-evaluate-path: ^0.5.0
     babel-helper-mark-eval-scopes: ^0.4.3
     babel-helper-remove-or-void: ^0.4.3
-    lodash.some: ^4.6.0
-  checksum: b3df4f2ec41fc42a42516307e82a5d98471cc32566a34685c3dffd3ce10630279136fe8f7ab32f2d330bf33583cd31146ec251c6f36eb88dd6477b9f5cb301c2
+    lodash: ^4.17.11
+  checksum: 5a6468d095231f30ba96d2f94839d2c0e232b360ac8a7a99f41b8c2aff10411acea027902a63ad25a02275b312613371f1f90555b6f0558445c6992c53d3c0e6
   languageName: node
   linkType: hard
 
@@ -1588,7 +1579,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-minify-guarded-expressions@npm:^0.4.3":
+"babel-plugin-minify-guarded-expressions@npm:^0.4.4":
   version: 0.4.4
   resolution: "babel-plugin-minify-guarded-expressions@npm:0.4.4"
   dependencies:
@@ -1605,12 +1596,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-minify-mangle-names@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-plugin-minify-mangle-names@npm:0.4.3"
+"babel-plugin-minify-mangle-names@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "babel-plugin-minify-mangle-names@npm:0.5.0"
   dependencies:
     babel-helper-mark-eval-scopes: ^0.4.3
-  checksum: eea60bc6e17db97e4c049e7dbb7fac68ce40d4c7a666b7e90350d7dcc424e3d978a9a2b02920fc65fe2871226dd5fb5817e2e2a5c0335875a69546bd0cf26740
+  checksum: 59ea617b6822c335a9c3959d09155cc3e2babe6d79fff11c9418cd9b972d6f281b7bc8b6c9986bf69290852f04922b1085fee32a6885a46268b3de89c19f77a9
   languageName: node
   linkType: hard
 
@@ -1621,21 +1612,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-minify-replace@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-plugin-minify-replace@npm:0.4.3"
-  checksum: 6edbcbc1324bc238d1a29b8c8c52cc3bb1a86fd16811e2336ca7c16c52b574d97fc71821af41a5d4a1cef8c08a83595aa4e363487883a4509c98d668f107d1d4
+"babel-plugin-minify-replace@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "babel-plugin-minify-replace@npm:0.5.0"
+  checksum: 0343b5f7c0c69b3ca810fbc4080c2dcc61721474652dabb04d18cc24618be63b23b349159a0658852708d20e5cebbc8419bcf0d536937bfd39848ca368cd6df1
   languageName: node
   linkType: hard
 
-"babel-plugin-minify-simplify@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-plugin-minify-simplify@npm:0.4.3"
+"babel-plugin-minify-simplify@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "babel-plugin-minify-simplify@npm:0.5.1"
   dependencies:
+    babel-helper-evaluate-path: ^0.5.0
     babel-helper-flip-expressions: ^0.4.3
     babel-helper-is-nodes-equiv: ^0.0.1
-    babel-helper-to-multiple-sequence-expressions: ^0.4.3
-  checksum: 8c763b24cabcbfda941fed3c40b049005f7babba78ed04ec23b67099af10feb9ea5e21d19a90f55f3eb9ee9c32506d90c7b5cbca0be18c0e3fd1f29f2a6317e0
+    babel-helper-to-multiple-sequence-expressions: ^0.5.0
+  checksum: c3810bc29fdb16aa8054b2bef3a79537f71ed40c609aaa7b44466f75a94a3f32d2c94afe285d333e9c2a2a342b1d92243b7dda2e0e27847e27a7fc9b0892f511
   languageName: node
   linkType: hard
 
@@ -1742,12 +1734,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-transform-remove-undefined@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-plugin-transform-remove-undefined@npm:0.4.3"
+"babel-plugin-transform-remove-undefined@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "babel-plugin-transform-remove-undefined@npm:0.5.0"
   dependencies:
-    babel-helper-evaluate-path: ^0.4.3
-  checksum: f0344059c2961dc16e1e48396cbd7de725ed2c6b98710a7365326613c6cb114c21a182d5bb79b050627dda00aaf5967cae0c9ce1c348e0b037d29ec01c4e2ae1
+    babel-helper-evaluate-path: ^0.5.0
+  checksum: 3b5a7f332e2e2f58eaefddb31cb35568977bd6be21a381c525da01553a7fbf59d26e3610ff64b674a18956aa59461b2840785d1e858633c44bb49973bc7d3175
   languageName: node
   linkType: hard
 
@@ -1765,20 +1757,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-minify@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-preset-minify@npm:0.4.3"
+"babel-preset-minify@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "babel-preset-minify@npm:0.5.1"
   dependencies:
-    babel-plugin-minify-builtins: ^0.4.3
-    babel-plugin-minify-constant-folding: ^0.4.3
-    babel-plugin-minify-dead-code-elimination: ^0.4.3
+    babel-plugin-minify-builtins: ^0.5.0
+    babel-plugin-minify-constant-folding: ^0.5.0
+    babel-plugin-minify-dead-code-elimination: ^0.5.1
     babel-plugin-minify-flip-comparisons: ^0.4.3
-    babel-plugin-minify-guarded-expressions: ^0.4.3
+    babel-plugin-minify-guarded-expressions: ^0.4.4
     babel-plugin-minify-infinity: ^0.4.3
-    babel-plugin-minify-mangle-names: ^0.4.3
+    babel-plugin-minify-mangle-names: ^0.5.0
     babel-plugin-minify-numeric-literals: ^0.4.3
-    babel-plugin-minify-replace: ^0.4.3
-    babel-plugin-minify-simplify: ^0.4.3
+    babel-plugin-minify-replace: ^0.5.0
+    babel-plugin-minify-simplify: ^0.5.1
     babel-plugin-minify-type-constructors: ^0.4.3
     babel-plugin-transform-inline-consecutive-adds: ^0.4.3
     babel-plugin-transform-member-expression-literals: ^6.9.4
@@ -1788,11 +1780,11 @@ __metadata:
     babel-plugin-transform-regexp-constructors: ^0.4.3
     babel-plugin-transform-remove-console: ^6.9.4
     babel-plugin-transform-remove-debugger: ^6.9.4
-    babel-plugin-transform-remove-undefined: ^0.4.3
+    babel-plugin-transform-remove-undefined: ^0.5.0
     babel-plugin-transform-simplify-comparison-operators: ^6.9.4
     babel-plugin-transform-undefined-to-void: ^6.9.4
-    lodash.isplainobject: ^4.0.6
-  checksum: 2a220487fd0aa79b5fb8da947a50b90a55d15e490315ef45be2cfa27aa41f875474353cb1d443e1c8330ff3529320b73fcf1fc8626b6031f7b5436648acaa8e5
+    lodash: ^4.17.11
+  checksum: 10f269cff50b4c666a4d664339dbeb7b73fc7f062e6bca4d0ccd91240f1f928599737299d51a155ddab4287de46ed22909d56121d555dae2acf437129baa5caf
   languageName: node
   linkType: hard
 
@@ -2938,14 +2930,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gulp-rename@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "gulp-rename@npm:1.4.0"
-  checksum: 8241dcd0312d14cc1b6fd121a59eafc352291263f3ac0c47f118e999ef18df3a7d0718fb81021c825e18367fb25a93375b1bc9d6bb3402ed9319ab1f740d72f5
+"gulp-rename@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "gulp-rename@npm:2.0.0"
+  checksum: eef6e0405e8056b78e764b1d70e1d1d6c464251ef8aea695dd31813ce3dff61880289d73b32ec4a2749eab7085cc1f2b33befe2a8a5436cf75b74ed21c7097a9
   languageName: node
   linkType: hard
 
-"gulp@npm:^4.0.0":
+"gulp@npm:^4.0.2":
   version: 4.0.2
   resolution: "gulp@npm:4.0.2"
   dependencies:
@@ -3589,20 +3581,6 @@ fsevents@^1.2.7:
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
   checksum: b6042bd8c09ff1961c9127d32266316bc21f946ece5e3464a663ec61fadb98e7d56ec0ef7e23b47d393695310c19cf24e651c1756be6da91ac02c72be7f79465
-  languageName: node
-  linkType: hard
-
-"lodash.isplainobject@npm:^4.0.6":
-  version: 4.0.6
-  resolution: "lodash.isplainobject@npm:4.0.6"
-  checksum: 72a114b610ec32a42b8cb47680d1729398caea0ee0631c0b220b97b21e7df19312377cb077acb6593bf6c5abdbdb43c530aa66b440e30d53324986d386808cd0
-  languageName: node
-  linkType: hard
-
-"lodash.some@npm:^4.6.0":
-  version: 4.6.0
-  resolution: "lodash.some@npm:4.6.0"
-  checksum: ac19755d79e0745643762f0415b667034837b137d801f0bd0a7fa2a21b653f3f9342076f6fd2ddb394109a96cd68a157b84d961d3c91e47b37a5d96a40c2233e
   languageName: node
   linkType: hard
 
@@ -4414,15 +4392,14 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "regrest@workspace:."
   dependencies:
-    "@babel/core": ^7.4.0
-    "@babel/plugin-proposal-object-rest-spread": ^7.4.0
-    "@babel/preset-env": ^7.4.2
-    babel-preset-minify: ^0.4.3
+    "@babel/core": ^7.14.3
+    "@babel/preset-env": ^7.14.4
+    babel-preset-minify: ^0.5.1
     follow-redirects: ^1.7.0
-    gulp: ^4.0.0
+    gulp: ^4.0.2
     gulp-babel: ^8.0.0
     gulp-iife: ^0.4.0
-    gulp-rename: ^1.4.0
+    gulp-rename: ^2.0.0
   languageName: unknown
   linkType: soft
 
