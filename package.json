@@ -1,6 +1,6 @@
 {
   "name": "regrest",
-  "version": "3.6.11",
+  "version": "3.7.0",
   "description": "tiny http client - features rich - modern promise base",
   "main": "./lib/regrest.js",
   "typings": "./lib/regrest.d.ts",
