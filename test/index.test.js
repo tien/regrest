@@ -1,4 +1,4 @@
-const regrest = require("../src/regrest");
+import regrest from "../src/index";
 
 const expectResponseSnapshot = (received, statusCode) => {
   expect(received.status).toBe(statusCode);

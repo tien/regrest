@@ -127,22 +127,6 @@ Regrest.prototype.request = function ({
     })
 );
 
-// Export
-if (
-  typeof module === "object" &&
-  module &&
-  typeof module.exports === "object"
-) {
-  /**
-   * Expose Regrest as module.exports in loaders
-   * that implement the Node module pattern (including browserify)
-   */
-  module.exports = new Regrest();
-} else {
-  // Otherwise expose Regrest to the global object
-  window.regrest = new Regrest();
-}
-
 // Unexposed helper methods and adapters
 function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
   return new Promise((resolve, reject) => {
@@ -268,3 +252,5 @@ function httpAdapter(requestType, url, body, headers, maxRedirects) {
     req.end();
   });
 }
+
+export default new Regrest();

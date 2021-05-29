@@ -36,7 +36,7 @@ $ npm install regrest
 Using cdn:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/regrest/build/regrest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/regrest/lib/index.min.js"></script>
 ```
 
 ## 🎬 Example
