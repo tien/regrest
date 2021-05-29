@@ -171,14 +171,16 @@ function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
         },
         text: this.responseText,
         get json() {
+          const result = JSON.parse(this.text);
           delete this.json;
-          return (this.json = JSON.parse(this.text));
+          return (this.json = result);
         },
         get blob() {
-          delete this.blob;
-          return (this.blob = new Blob([request.response], {
+          const result = new Blob([request.response], {
             type: contentType,
-          }));
+          });
+          delete this.blob;
+          return (this.blob = result);
         },
         get arrayBuffer() {
           delete this.arrayBuffer;
@@ -223,22 +225,25 @@ function httpAdapter(requestType, url, body, headers, maxRedirects) {
           headers: res.headers,
           arrayBuffer: [],
           get text() {
+            const result = this.arrayBuffer.toString("utf-8");
             delete this.text;
-            return (this.text = this.arrayBuffer.toString("utf-8"));
+            return (this.text = result);
           },
           get json() {
+            const result = JSON.parse(this.text);
             delete this.json;
-            return (this.json = JSON.parse(this.text));
+            return (this.json = result);
           },
           get blob() {
-            if (typeof Blob !== "function") {
+            if (Blob === undefined) {
               throw new Error("Please include Blob polyfill for Node.js");
             }
             const contentType = this.headers["content-type"] || "";
-            delete this.blob;
-            return (this.blob = new Blob([new Uint8Array(this.arrayBuffer)], {
+            const result = new Blob([new Uint8Array(this.arrayBuffer)], {
               type: contentType.split(";")[0].trim(),
-            }));
+            });
+            delete this.blob;
+            return (this.blob = result);
           },
         };
         res.on("data", (chunk) => response.arrayBuffer.push(chunk));
