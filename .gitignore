@@ -37,9 +37,14 @@ jspm_packages
 # Lib
 lib
 
-# npm package lock
-package-lock.json
-yarn.lock
-
-others
+# others
 .DS_Store
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
