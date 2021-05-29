@@ -2,8 +2,8 @@
   "name": "regrest",
   "version": "3.6.10",
   "description": "tiny http client - features rich - modern promise base",
-  "main": "./build/regrest.js",
-  "typings": "./build/regrest.d.ts",
+  "main": "./lib/regrest.js",
+  "typings": "./lib/regrest.d.ts",
   "scripts": {
     "build": "gulp build",
     "test": "yarn build && node ./test/test.js",
@@ -26,6 +26,11 @@
   "bugs": {
     "url": "https://github.com/tien/regrest/issues"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib/"
+  ],
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",

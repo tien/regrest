@@ -39,6 +39,7 @@ lib
 
 # others
 .DS_Store
+.env
 
 # Yarn
 .yarn/*
