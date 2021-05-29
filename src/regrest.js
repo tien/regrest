@@ -231,11 +231,11 @@ function httpAdapter(requestType, url, body, headers, maxRedirects) {
             return (this.json = JSON.parse(this.text));
           },
           get blob() {
-            delete this.blob;
             if (typeof Blob !== "function") {
               throw new Error("Please include Blob polyfill for Node.js");
             }
             const contentType = this.headers["content-type"] || "";
+            delete this.blob;
             return (this.blob = new Blob([new Uint8Array(this.arrayBuffer)], {
               type: contentType.split(";")[0].trim(),
             }));
