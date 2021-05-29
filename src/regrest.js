@@ -171,13 +171,18 @@ function xhrAdapter(requestType, url, body, headers, _, withCredentials) {
         },
         text: this.responseText,
         get json() {
-          return JSON.parse(this.text);
+          delete this.json;
+          return (this.json = JSON.parse(this.text));
         },
         get blob() {
-          return new Blob([request.response], { type: contentType });
+          delete this.blob;
+          return (this.blob = new Blob([request.response], {
+            type: contentType,
+          }));
         },
         get arrayBuffer() {
-          return this.blob;
+          delete this.arrayBuffer;
+          return (this.arrayBuffer = this.blob);
         },
       };
       if (this.status >= 200 && this.status < 400) {
@@ -218,19 +223,22 @@ function httpAdapter(requestType, url, body, headers, maxRedirects) {
           headers: res.headers,
           arrayBuffer: [],
           get text() {
-            return this.arrayBuffer.toString("utf-8");
+            delete this.text;
+            return (this.text = this.arrayBuffer.toString("utf-8"));
           },
           get json() {
-            return JSON.parse(this.text);
+            delete this.json;
+            return (this.json = JSON.parse(this.text));
           },
           get blob() {
+            delete this.blob;
             if (typeof Blob !== "function") {
               throw new Error("Please include Blob polyfill for Node.js");
             }
             const contentType = this.headers["content-type"] || "";
-            return new Blob([new Uint8Array(this.arrayBuffer)], {
+            return (this.blob = new Blob([new Uint8Array(this.arrayBuffer)], {
               type: contentType.split(";")[0].trim(),
-            });
+            }));
           },
         };
         res.on("data", (chunk) => response.arrayBuffer.push(chunk));
