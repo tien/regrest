@@ -1,5 +1,5 @@
-import xhrAdapter from "./adapters/xhrAdapter";
 import httpAdapter from "./adapters/httpAdapter";
+import xhrAdapter from "./adapters/xhrAdapter";
 
 /**
  * Config options
