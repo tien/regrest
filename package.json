@@ -4,9 +4,11 @@
   "description": "tiny http client - features rich - modern promise base",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
+  "jsdelivr": "lib/index.umd.min.js",
+  "unpkg": "lib/index.umd.min.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "build": "rollup -c && cp src/index.d.ts lib/index.d.ts",
+    "build": "rm -rf lib/ && rollup -c && cp src/index.d.ts lib/index.d.ts",
     "test": "jest",
     "release": "release-it"
   },

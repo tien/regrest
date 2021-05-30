@@ -21,9 +21,10 @@ export default [
   {
     input: "src/index.js",
     output: {
-      file: "lib/index.min.js",
-      format: "iife",
+      file: "lib/index.umd.min.js",
+      format: "umd",
       name: "regrest",
+      sourcemap: true,
       compact: true,
       plugins: [terser()],
     },
