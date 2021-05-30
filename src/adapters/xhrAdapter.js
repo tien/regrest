@@ -1,3 +1,5 @@
+import NetworkError from "../NetworkError";
+
 export default function xhrAdapter(
   requestType,
   url,
