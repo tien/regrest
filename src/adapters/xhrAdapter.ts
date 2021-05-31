@@ -16,7 +16,7 @@ const xhrAdapter: Adapter = function (
     Object.entries(headers).forEach(([key, value]) =>
       request.setRequestHeader(key, value)
     );
-    withCredentials && (request.withCredentials = true);
+    request.withCredentials = withCredentials;
     request.onload = function () {
       const contentType = this.getResponseHeader("Content-Type")
         ?.split(";")?.[0]
