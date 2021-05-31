@@ -46,7 +46,7 @@ const httpAdapter: Adapter = function (
             throw new Error("Please include Blob polyfill for Node.js");
           }
           const contentType = this.headers["content-type"] || "";
-          const result = new Blob([new Uint8Array(this.arrayBuffer)], {
+          const result = new Blob([this.arrayBuffer], {
             type: contentType.split(";")[0].trim(),
           });
           delete this.blob;
