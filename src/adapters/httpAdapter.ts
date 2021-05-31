@@ -21,11 +21,12 @@ const httpAdapter: Adapter = function (
     const req = this.nodeAdapters[parsedUrl.protocol.slice(0, -1)].request(
       options,
       (res) => {
+        const chunks = [];
         const response = {
           status: res.statusCode,
           statusText: res.statusMessage,
           headers: res.headers,
-          arrayBuffer: [],
+          arrayBuffer: Buffer.from([]),
           get text() {
             const result = this.arrayBuffer.toString("utf-8");
             delete this.text;
@@ -48,9 +49,9 @@ const httpAdapter: Adapter = function (
             return (this.blob = result);
           },
         };
-        res.on("data", (chunk) => response.arrayBuffer.push(chunk));
+        res.on("data", (chunk) => chunks.push(chunk));
         res.on("end", () => {
-          response.arrayBuffer = Buffer.concat(response.arrayBuffer);
+          response.arrayBuffer = Buffer.concat(chunks);
           if (res.statusCode >= 200 && res.statusCode < 400) {
             resolve(response);
           } else {
