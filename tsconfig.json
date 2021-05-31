@@ -3,6 +3,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "isolatedModules": true,
+    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     // "noImplicitOverride": true,
     "noImplicitReturns": true,

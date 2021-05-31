@@ -1,6 +1,6 @@
-import regrest from "../src/index";
+import regrest, { Response } from "../src";
 
-const expectResponseSnapshot = (received, statusCode) => {
+const expectResponseSnapshot = (received: Response, statusCode: number) => {
   expect(received.status).toBe(statusCode);
   expect(received.text).toMatchSnapshot();
   expect(received.json).toMatchSnapshot();
