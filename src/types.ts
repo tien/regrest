@@ -8,7 +8,15 @@ export type Options = {
   headers?: { [key: string]: string };
   params?: { [key: string]: any };
   data?: RequestBody;
+
+  /**
+   * Maximum redirects before error is thrown
+   */
   maxRedirects?: number;
+
+  /**
+   * Whether cross-site Access-Control requests should be made using credentials
+   */
   withCredentials?: boolean;
 };
 
@@ -22,6 +30,10 @@ export type Response = {
   headers: { [key: string]: string | string[] | undefined };
   text: string;
   json: any;
+
+  /**
+   * The response as an Blob on browser or Buffer on Node js
+   */
   arrayBuffer: any;
   blob: any;
 };
