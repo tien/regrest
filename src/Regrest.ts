@@ -1,13 +1,14 @@
 import httpAdapter from "./adapters/httpAdapter";
 import xhrAdapter from "./adapters/xhrAdapter";
-import { Adapter, Environment } from "./types";
+import { Environment } from "./types";
 
 import type { http, https } from "follow-redirects";
-import type { Options, OptionsWithUrl, RequestBody } from "./types";
+import type { Adapter, Options, OptionsWithUrl, Response } from "./types";
+import type { PickKey } from "./utils";
 
 /**
- * Config options
- * @typedef {Object.<string, *>} Config
+ * Options options
+ * @typedef {Object.<string, *>} Options
  * @property {string} [method = "GET"] - HTTP request method
  * @property {string} [url] - The url
  * @property {Object.<string, string>} [headers = {}] - The request headers
@@ -35,8 +36,10 @@ const ENV =
     : Environment.unknown;
 
 export class Regrest {
+  readonly prototype!: Regrest;
+
   readonly requestAdapter: Adapter;
-  readonly nodeAdapters: { http: typeof http; https: typeof https };
+  readonly nodeAdapters!: { http: typeof http; https: typeof https };
 
   constructor() {
     switch (ENV) {
@@ -56,8 +59,8 @@ export class Regrest {
   }
 
   /**
-   * @param {Config} config
-   * @param {string} config.url - The url
+   * @param {Options} options
+   * @param {string} options.url - The url
    * @returns {Promise<Response>}
    * @memberof Regrest
    */
@@ -86,37 +89,44 @@ export class Regrest {
       withCredentials
     );
   }
+
+  get!: (url: string, options?: Options) => Promise<Response>;
+  delete!: (url: string, options?: Options) => Promise<Response>;
+  head!: (url: string, options?: Options) => Promise<Response>;
+  options!: (url: string, options?: Options) => Promise<Response>;
+  post!: (url: string, data?: any, options?: Options) => Promise<Response>;
+  put!: (url: string, data?: any, options?: Options) => Promise<Response>;
+  patch!: (url: string, data?: any, options?: Options) => Promise<Response>;
 }
+
+type Verb = PickKey<Regrest, "get" | "head" | "delete" | "options">;
+type VerbWithData = PickKey<Regrest, "post" | "put" | "patch">;
 
 /**
  * @param {string} url - The url
- * @param {Options} [config] - Config
+ * @param {Options} [options] - Options
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
-["get", "head", "delete", "options"].forEach(
+(<Verb[]>["get", "head", "delete", "options"]).forEach(
   (method) =>
-    (Regrest.prototype[method] = function (url: string, config: Options) {
-      return this.request({ ...config, method: method.toUpperCase(), url });
+    (Regrest.prototype[method] = function (url, options) {
+      return this.request({ ...options, method: method.toUpperCase(), url });
     })
 );
 
 /**
  * @param {string} url - The url
  * @param {*} [data] - The data to be sent
- * @param {Options} [config] - Config
+ * @param {Options} [options] - Options
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
-["post", "put", "patch"].forEach(
+(<VerbWithData[]>["post", "put", "patch"]).forEach(
   (method) =>
-    (Regrest.prototype[method] = function (
-      url: string,
-      data: RequestBody,
-      config: Options
-    ) {
+    (Regrest.prototype[method] = function (url, data, options) {
       return this.request({
-        ...config,
+        ...options,
         method: method.toUpperCase(),
         url,
         data,
