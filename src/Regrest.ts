@@ -6,28 +6,6 @@ import type { http, https } from "follow-redirects";
 import type { Adapter, Options, OptionsWithUrl, Response } from "./types";
 import type { PickKey } from "./utils";
 
-/**
- * Options options
- * @typedef {Object.<string, *>} Options
- * @property {string} [method = "GET"] - HTTP request method
- * @property {string} [url] - The url
- * @property {Object.<string, string>} [headers = {}] - The request headers
- * @property {Object.<string, *>} [params] - The request query
- * @property {*} [data = null] - The data to be sent
- * @property {number} [maxRedirects = 5] - Maximum redirects before error is thrown
- * @property {boolean} [withCredentials = false] - Whether cross-site Access-Control requests should be made using credentials
- *
- * Regrest response object
- * @typedef {Object.<string, *>} Response
- * @property {number} status - The response status code
- * @property {string} statusText - The response status text
- * @property {Object.<string, string>} headers - The response headers
- * @property {string} text - The response raw text
- * @property {Object} json - The response parsed as JSON
- * @property {Blob|any} arrayBuffer - The response as an Blob on browser or Buffer on Node js
- * @property {Blob} blob - The response as a Blob object
- */
-
 const ENV =
   typeof window === "object" && typeof window.document === "object"
     ? Environment.browser
@@ -36,9 +14,19 @@ const ENV =
     : Environment.unknown;
 
 export class Regrest {
+  /**
+   * @internal
+   */
   readonly prototype!: Regrest;
 
+  /**
+   * @internal
+   */
   readonly requestAdapter: Adapter;
+
+  /**
+   * @internal
+   */
   readonly nodeAdapters!: { http: typeof http; https: typeof https };
 
   constructor() {
@@ -58,12 +46,6 @@ export class Regrest {
     }
   }
 
-  /**
-   * @param {Options} options
-   * @param {string} options.url - The url
-   * @returns {Promise<Response>}
-   * @memberof Regrest
-   */
   request({
     method = "GET",
     url,
@@ -102,12 +84,6 @@ export class Regrest {
 type Verb = PickKey<Regrest, "get" | "head" | "delete" | "options">;
 type VerbWithData = PickKey<Regrest, "post" | "put" | "patch">;
 
-/**
- * @param {string} url - The url
- * @param {Options} [options] - Options
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
 (<Verb[]>["get", "head", "delete", "options"]).forEach(
   (method) =>
     (Regrest.prototype[method] = function (url, options) {
@@ -115,13 +91,6 @@ type VerbWithData = PickKey<Regrest, "post" | "put" | "patch">;
     })
 );
 
-/**
- * @param {string} url - The url
- * @param {*} [data] - The data to be sent
- * @param {Options} [options] - Options
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
 (<VerbWithData[]>["post", "put", "patch"]).forEach(
   (method) =>
     (Regrest.prototype[method] = function (url, data, options) {
