@@ -87,4 +87,13 @@ describe("regrest", () => {
 
     expectResponseSnapshot(response, 200);
   });
+
+  test("errors handling", async () => {
+    try {
+      await regrest.post("https://jsonplaceholder.typicode.com/rubbish");
+      expect(true).toBe(false);
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(`[NetworkError: 404 Not Found]`);
+    }
+  });
 });
