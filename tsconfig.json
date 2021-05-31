@@ -3,8 +3,17 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "isolatedModules": true,
+    "noFallthroughCasesInSwitch": true,
+    // "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": false,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "lib/types",
     "skipLibCheck": true,
+    "strict": true,
     "target": "ESNext"
   },
   "exclude": ["node_modules", "lib"]

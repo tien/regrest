@@ -93,27 +93,27 @@ regrest
 
 ### Convenience methods
 
-##### regrest.request(config)
+##### regrest.request(options)
 
-##### regrest.get(url[, config])
+##### regrest.get(url[, options])
 
-##### regrest.head(url[, config])
+##### regrest.head(url[, options])
 
-##### regrest.post(url[, data[, config]])
+##### regrest.post(url[, data[, options]])
 
-##### regrest.put(url[, data[, config]])
+##### regrest.put(url[, data[, options]])
 
-##### regrest.delete(url[, config])
+##### regrest.delete(url[, options])
 
-##### regrest.options(url[, config])
+##### regrest.options(url[, options])
 
-##### regrest.patch(url[, data[, config]])
+##### regrest.patch(url[, data[, options]])
 
-### Config options
+### Options options
 
 ```js
 // Default options are marked with *
-const config = {
+const options = {
   method: "GET", // *GET, POST, PUT, DELETE, etc.
   url: "https://some-domain.com/api/",
   headers: { "Content-Type": "application/json; charset=utf-8" }, // *{}

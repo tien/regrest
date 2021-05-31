@@ -18,9 +18,9 @@ const xhrAdapter: Adapter = function (
     );
     withCredentials && (request.withCredentials = true);
     request.onload = function () {
-      const contentType = (this.getResponseHeader("Content-Type") || "")
-        .split(";")[0]
-        .trim();
+      const contentType = this.getResponseHeader("Content-Type")
+        ?.split(";")?.[0]
+        ?.trim();
       const response = {
         status: this.status,
         statusText: this.statusText,
@@ -28,7 +28,7 @@ const xhrAdapter: Adapter = function (
           ...this.getAllResponseHeaders()
             .trim()
             .split(/[\r\n]+/)
-            .map((header) => header.split(": "))
+            .map((header) => header.split(": ") as [string, string])
             .reduce(
               (obj, [key, value]) => ({ ...obj, [key.toLowerCase()]: value }),
               {}
