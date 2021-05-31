@@ -1,13 +1,15 @@
 import NetworkError from "../NetworkError";
 
-export default function httpAdapter(
+import type { Adapter, Response } from "../types";
+
+const httpAdapter: Adapter = function (
   requestType,
   url,
   body,
   headers,
   maxRedirects
 ) {
-  return new Promise((resolve, reject) => {
+  return new Promise<Response>((resolve, reject) => {
     const parsedUrl = new URL(url);
     const options = {
       host: parsedUrl.host,
@@ -67,4 +69,6 @@ export default function httpAdapter(
     body && req.write(body);
     req.end();
   });
-}
+};
+
+export default httpAdapter;

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "isolatedModules": true,
+    "outDir": "lib/types",
+    "skipLibCheck": true,
+    "target": "ESNext"
+  },
+  "exclude": ["node_modules", "lib"]
+}

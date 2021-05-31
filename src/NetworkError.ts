@@ -1,9 +1,13 @@
+import { Response } from "./types";
+
 export default class NetworkError extends Error {
-  constructor(message, request, response) {
+  constructor(
+    message: string,
+    public request: any,
+    public response?: Response
+  ) {
     super(message);
     this.name = this.constructor.name;
-    this.response = response;
-    this.request = request;
     if (typeof Error.captureStackTrace === "function") {
       Error.captureStackTrace(this, this.constructor);
     } else {

@@ -1,5 +1,9 @@
 import httpAdapter from "./adapters/httpAdapter";
 import xhrAdapter from "./adapters/xhrAdapter";
+import { Adapter, Environment } from "./types";
+
+import type { http, https } from "follow-redirects";
+import type { Options, OptionsWithUrl, RequestBody } from "./types";
 
 /**
  * Config options
@@ -23,76 +27,76 @@ import xhrAdapter from "./adapters/xhrAdapter";
  * @property {Blob} blob - The response as a Blob object
  */
 
-const ENVIRONMENTS = Object.freeze({ BROWSER: 0, NODE: 1, UNKNOWN: 2 });
-
-// Detect whether instance is ran in browser or on node js
 const ENV =
   typeof window === "object" && typeof window.document === "object"
-    ? ENVIRONMENTS.BROWSER
+    ? Environment.browser
     : typeof module === "object" && module && typeof module.exports === "object"
-    ? ENVIRONMENTS.NODE
-    : ENVIRONMENTS.UNKNOWN;
+    ? Environment.node
+    : Environment.unknown;
 
-function Regrest() {
-  switch (ENV) {
-    case ENVIRONMENTS.BROWSER:
-      this.requestAdapter = xhrAdapter.bind(this);
-      break;
-    case ENVIRONMENTS.NODE:
-      this.nodeAdapters = {
-        http: require("follow-redirects").http,
-        https: require("follow-redirects").https,
-      };
-      this.requestAdapter = httpAdapter.bind(this);
-      break;
-    default:
-      throw new Error("Unsupported environment");
+export class Regrest {
+  readonly requestAdapter: Adapter;
+  readonly nodeAdapters: { http: typeof http; https: typeof https };
+
+  constructor() {
+    switch (ENV) {
+      case Environment.browser:
+        this.requestAdapter = xhrAdapter.bind(this);
+        break;
+      case Environment.node:
+        this.nodeAdapters = {
+          http: require("follow-redirects").http,
+          https: require("follow-redirects").https,
+        };
+        this.requestAdapter = httpAdapter.bind(this);
+        break;
+      default:
+        throw new Error("Unsupported environment");
+    }
+  }
+
+  /**
+   * @param {Config} config
+   * @param {string} config.url - The url
+   * @returns {Promise<Response>}
+   * @memberof Regrest
+   */
+  request({
+    method = "GET",
+    url,
+    headers = {},
+    params,
+    data = null,
+    maxRedirects = 5,
+    withCredentials = false,
+  }: OptionsWithUrl) {
+    url = `${url}${
+      params
+        ? `?${Object.entries(params)
+            .map(([key, value]) => `${key}=${value}`)
+            .join("&")}`
+        : ""
+    }`;
+    return this.requestAdapter(
+      method,
+      url,
+      data,
+      headers,
+      maxRedirects,
+      withCredentials
+    );
   }
 }
 
 /**
- * @param {Config} config
- * @param {string} config.url - The url
- * @returns {Promise<Response>}
- * @memberof Regrest
- */
-Regrest.prototype.request = function ({
-  method = "GET",
-  url,
-  headers = {},
-  params,
-  data = null,
-  maxRedirects = 5,
-  withCredentials = false,
-}) {
-  // Generate query string and join it with url
-  url = `${url}${
-    params
-      ? `?${Object.entries(params)
-          .map(([key, value]) => `${key}=${value}`)
-          .join("&")}`
-      : ""
-  }`;
-  return this.requestAdapter(
-    method,
-    url,
-    data,
-    headers,
-    maxRedirects,
-    withCredentials
-  );
-};
-
-// Convenience methods
-/**
  * @param {string} url - The url
- * @param {Config} [config] - Config
+ * @param {Options} [config] - Config
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
 ["get", "head", "delete", "options"].forEach(
   (method) =>
-    (Regrest.prototype[method] = function (url, config) {
+    (Regrest.prototype[method] = function (url: string, config: Options) {
       return this.request({ ...config, method: method.toUpperCase(), url });
     })
 );
@@ -100,13 +104,17 @@ Regrest.prototype.request = function ({
 /**
  * @param {string} url - The url
  * @param {*} [data] - The data to be sent
- * @param {Config} [config] - Config
+ * @param {Options} [config] - Config
  * @returns {Promise<Response>}
  * @memberof Regrest
  */
 ["post", "put", "patch"].forEach(
   (method) =>
-    (Regrest.prototype[method] = function (url, data, config) {
+    (Regrest.prototype[method] = function (
+      url: string,
+      data: RequestBody,
+      config: Options
+    ) {
       return this.request({
         ...config,
         method: method.toUpperCase(),
@@ -116,4 +124,4 @@ Regrest.prototype.request = function ({
     })
 );
 
-export default new Regrest();
+export default Regrest;

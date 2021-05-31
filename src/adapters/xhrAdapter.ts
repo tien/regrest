@@ -1,6 +1,8 @@
 import NetworkError from "../NetworkError";
 
-export default function xhrAdapter(
+import type { Adapter, Response } from "../types";
+
+const xhrAdapter: Adapter = function (
   requestType,
   url,
   body,
@@ -8,7 +10,7 @@ export default function xhrAdapter(
   _,
   withCredentials
 ) {
-  return new Promise((resolve, reject) => {
+  return new Promise<Response>((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open(requestType, url, true);
     Object.entries(headers).forEach(([key, value]) =>
@@ -67,4 +69,6 @@ export default function xhrAdapter(
     };
     request.send(body);
   });
-}
+};
+
+export default xhrAdapter;

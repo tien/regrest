@@ -1,9 +1,12 @@
 import { babel } from "@rollup/plugin-babel";
+import resolve from "@rollup/plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
+
+const extensions = [".ts"];
 
 export default [
   {
-    input: "src/index.js",
+    input: "src/index.ts",
     external: [/@babel\/runtime/],
     output: [
       {
@@ -16,10 +19,16 @@ export default [
         format: "es",
       },
     ],
-    plugins: [babel({ babelHelpers: "runtime" })],
+    plugins: [
+      resolve({ extensions }),
+      babel({
+        babelHelpers: "runtime",
+        extensions,
+      }),
+    ],
   },
   {
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
       file: "lib/index.umd.min.js",
       format: "umd",
@@ -29,10 +38,12 @@ export default [
       plugins: [terser()],
     },
     plugins: [
+      resolve({ extensions }),
       babel({
-        presets: ["@babel/preset-env"],
+        presets: ["@babel/preset-env", "@babel/preset-typescript"],
         babelHelpers: "bundled",
         babelrc: false,
+        extensions,
       }),
     ],
   },
