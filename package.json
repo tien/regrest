@@ -42,6 +42,7 @@
     "@release-it/conventional-changelog": "^2.0.1",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
+    "@types/follow-redirects": "^1.13.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.6.1",
     "babel-jest": "^27.0.1",
@@ -54,7 +55,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
-    "@types/follow-redirects": "^1.13.0",
     "follow-redirects": "^1.14.1"
   }
 }
