@@ -12,7 +12,7 @@ export default [
       {
         dir: "lib",
         format: "cjs",
-        exports: "default",
+        exports: "named",
       },
       {
         file: "lib/index.mjs",
@@ -35,6 +35,7 @@ export default [
       name: "regrest",
       sourcemap: true,
       compact: true,
+      exports: "named",
       plugins: [terser()],
     },
     plugins: [
