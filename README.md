@@ -47,11 +47,9 @@ Performing a `GET` request
 
 ```js
 // Import using NodeJS or CommonJS module
-const regrest = require("regrest");
+const regrest = require("regrest").default;
 // Or using ES6 module
 import regrest from "regrest";
-// Without synthetic default imports (e.g. TypeScript)
-import * as regrest from "regrest";
 
 // Use Promise
 regrest
