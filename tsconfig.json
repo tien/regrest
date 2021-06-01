@@ -17,5 +17,5 @@
     "strict": true,
     "target": "ESNext"
   },
-  "exclude": ["node_modules", "lib"]
+  "exclude": ["node_modules", "lib", "test"]
 }
