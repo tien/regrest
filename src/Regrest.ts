@@ -22,12 +22,9 @@ export class Regrest {
   /**
    * @internal
    */
-  readonly requestAdapter: Adapter;
-
-  /**
-   * @internal
-   */
   readonly nodeAdapters!: { http: typeof http; https: typeof https };
+
+  private readonly requestAdapter: Adapter;
 
   constructor() {
     switch (ENV) {
