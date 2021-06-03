@@ -7,7 +7,7 @@
 
 
 
-## [3.8.1](https://github.com/tien/regrest/compare/3.8.1...3.9.0) (2021-05-29)
+## [3.8.1](https://github.com/tien/regrest/compare/3.7.0...3.8.1) (2021-05-29)
 
 
 ### Bug Fixes
@@ -16,7 +16,7 @@
 
 
 
-# [3.7.0](https://github.com/tien/regrest/compare/3.8.1...3.9.0) (2021-05-29)
+# [3.7.0](https://github.com/tien/regrest/compare/f4ffa39583ecbd43812214e9546aa1bd44d4a2ca...3.7.0) (2021-05-29)
 
 
 ### Bug Fixes
@@ -36,4 +36,6 @@
 
 * Revert "3.1.0" ([8880ae7](https://github.com/tien/regrest/commit/8880ae74027a9afd407190441b224c030c142e44))
 * Revert "Update README.md" ([f4ffa39](https://github.com/tien/regrest/commit/f4ffa39583ecbd43812214e9546aa1bd44d4a2ca))
+
+
 
